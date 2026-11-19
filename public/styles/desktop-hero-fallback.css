@@ -1,0 +1,85 @@
+/* Phase 1 simplified desktop hero (replaces hero-studio embed) */
+.d-stage--static-fallback {
+  min-height: 72vh;
+  background: linear-gradient(
+    165deg,
+    var(--color-bg) 0%,
+    var(--color-primary-tint) 45%,
+    var(--color-bg-alt) 100%
+  );
+  display: flex;
+  flex-direction: column;
+}
+
+.d-header--fallback {
+  position: relative;
+  z-index: 2;
+  padding: 16px 24px;
+}
+
+.d-header--fallback .d-header__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.d-logo__text {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.d-hero-fallback {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 48px 24px 80px;
+}
+
+.d-hero-fallback__inner {
+  max-width: 720px;
+  text-align: center;
+}
+
+.d-hero-fallback__title {
+  margin: 0 0 28px;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.d-hero-fallback__accent {
+  background: linear-gradient(
+    90deg,
+    var(--hero-stripe-start),
+    var(--hero-stripe-end)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.d-hero-fallback__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  text-decoration: none;
+}
+
+.d-stage--static-fallback .d-logo {
+  text-decoration: none;
+  color: inherit;
+}

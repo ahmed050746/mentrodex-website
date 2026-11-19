@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Web Crafts — Next.js (Phase 1)
 
-## Getting Started
+Next.js App Router port of the static mentorship site in `../shopify-course`.
 
-First, run the development server:
+## Quick start
 
 ```bash
+cd c:\Users\Ahmed\Documents\code\19-nov\aiwebcrafts-next
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) — routes: `/`, `/pay`, `/contact`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment (Supabase)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy env template values into `.env.local` (create the file if it does not exist):
 
-## Learn More
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
 
-To learn more about Next.js, take a look at the following resources:
+Health check: [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run SQL in Supabase SQL editor (in order):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. `supabase/migrations/003_orders.sql` — `orders` table
+2. `supabase/migrations/004_orders_image_upload.sql` — `image_upload` column
+3. `supabase/migrations/005_storage_payment_screenshots.sql` — `payment-screenshots` bucket + policies
+4. `supabase/migrations/001_initial.sql` — optional `contact_leads` for `/contact`
 
-## Deploy on Vercel
+**`orders` columns:** `order_id`, `city`, `country_value`, `currency`, `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Payment screenshots are uploaded server-side to Storage bucket **`payment-screenshots`**; `image_upload` stores the public URL. If uploads fail with permission errors, add **`SUPABASE_SERVICE_ROLE_KEY`** to `.env.local` (Dashboard → Settings → API → service_role, server-only).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Phase 1 scope (done)
+
+- UI from `index.html`, `pay.html`, `contact.html` with legacy CSS in `public/styles/`
+- Dual mobile/desktop home layout (`HomeLegacyMarkup`, regenerated via `scripts/convert-home-body.mjs`)
+- Simplified desktop hero (`desktop-hero-fallback.css`) — **not** the `hero-studio` Vite embed
+- Pay flow: 3 steps + `POST /api/enroll-stub` (multipart) → Storage + `orders` row
+- Contact: quiz accordion (React state) + stub `POST /api/contact-stub`
+- Supabase client helpers: `src/lib/supabase/`
+
+## Intentionally skipped (Phase 2+)
+
+- GTM, gtag, Facebook pixel
+- `js/home.js`, analytics, Bunny/YouTube players (static thumbs + play icon only on home)
+- Google Apps Script / Make webhooks
+- Full `hero-studio` animated desktop hero
+- Contact leads → Supabase (optional); tighten Storage RLS / private bucket + signed URLs
+
+## Phase 2 checklist
+
+- [ ] Port `hero-studio/` into a Next client component for desktop hero
+- [ ] Carousel + video embeds (Bunny)
+- [ ] Wire `/pay` and `/contact` to Supabase tables + Storage
+- [ ] Service-role API routes or RLS policies for public insert
+- [ ] Analytics (if desired)
+- [ ] Run `npm run build:perf` on static repo if you need production CSS bundles
+
+## Assets
+
+Static images should live under `public/img/`. If images are missing in git, copy the full `img/` folder from your live static deployment or local copy of `shopify-course`.
+
+**Referenced in HTML but not in the trimmed repo workspace** (copy when available):
+
+- `hero-mentor.webp`, `hero-mentor.png`
+- `logo.png`, `logo white.png`
+- `testi-01-thumb.png`, `testi-02-thumb.png`, `testi-03-thumb.jpg`
+- `lecture-01-thumb.png` … `lecture-04-thumb.png`
+- `hero-bg-full.png` (desktop hero CSS)
+- `heroimg.png` (legacy desktop styles)
+
+SVG icons from `shopify-course/img/` are copied when present.
+
+## Regenerating home markup
+
+After editing `../shopify-course/index.html`:
+
+```bash
+node scripts/convert-home-body.mjs
+```
