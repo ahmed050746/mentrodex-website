@@ -14,9 +14,13 @@ export function resolveMetaTestEventCode(
 export type MetaUserDataInput = {
   email?: string | null;
   phone?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
 export type MetaTrackOptions = {
+  eventId?: string;
+  eventSourceUrl?: string;
   userData?: MetaUserDataInput;
   customData?: Record<string, unknown>;
   testEventCode?: string;
@@ -44,8 +48,11 @@ export async function trackMetaEvent(
   eventName: string,
   options: MetaTrackOptions = {},
 ): Promise<string> {
-  const eventId = createMetaEventId();
+  const eventId = options.eventId ?? createMetaEventId();
   const customData = options.customData ?? {};
+  const eventSourceUrl =
+    options.eventSourceUrl ??
+    (typeof window !== "undefined" ? window.location.href : undefined);
 
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
     window.fbq("track", eventName, customData, { eventID: eventId });
@@ -56,8 +63,7 @@ export async function trackMetaEvent(
   const payload: Record<string, unknown> = {
     event_name: eventName,
     event_id: eventId,
-    event_source_url:
-      typeof window !== "undefined" ? window.location.href : undefined,
+    event_source_url: eventSourceUrl,
     user_data: options.userData,
     custom_data: Object.keys(customData).length ? customData : undefined,
   };

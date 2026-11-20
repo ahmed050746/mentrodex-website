@@ -11,6 +11,8 @@ type IncomingBody = {
   user_data?: {
     email?: string | null;
     phone?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
   };
   custom_data?: Record<string, unknown>;
   test_event_code?: string;
@@ -86,6 +88,16 @@ export async function POST(request: Request) {
   if (phone) {
     const hashed = hashPhone(phone);
     if (hashed) userData.ph = [hashed];
+  }
+
+  const firstName = body.user_data?.firstName?.trim();
+  if (firstName) {
+    userData.fn = [hashPII(firstName)];
+  }
+
+  const lastName = body.user_data?.lastName?.trim();
+  if (lastName) {
+    userData.ln = [hashPII(lastName)];
   }
 
   const eventPayload: Record<string, unknown> = {

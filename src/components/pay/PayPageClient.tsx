@@ -112,6 +112,20 @@ export default function PayPageClient() {
       }));
       return;
     }
+
+    void trackMetaEvent("InitiateCheckout", {
+      userData: {
+        email: fields.email || null,
+        phone: fields.phone || null,
+        firstName: fields.fn || null,
+        lastName: fields.ln || null,
+      },
+      customData: {
+        currency: "PKR",
+        value: 4500,
+      },
+    });
+
     setSubmitting(true);
     setSubmitError(null);
     try {

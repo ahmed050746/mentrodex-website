@@ -2,9 +2,12 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { trackMetaEvent } from "@/lib/metaTracking";
+import { createMetaEventId, trackMetaEvent } from "@/lib/metaTracking";
 
 const WA_NUMBER = "923293412618";
+
+/** Survives Strict Mode remount so PageView is not sent twice with different event_ids. */
+let lastPageViewUrlModule: string | null = null;
 
 function openWhatsApp(text: string) {
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -14,15 +17,22 @@ function openWhatsApp(text: string) {
 export function MetaAnalytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const lastPageKey = useRef<string | null>(null);
+  const lastTrackedUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const query = searchParams.toString();
-    const pageKey = query ? `${pathname}?${query}` : pathname;
-    if (lastPageKey.current === pageKey) return;
-    lastPageKey.current = pageKey;
+    const eventSourceUrl = window.location.href;
+    if (
+      lastTrackedUrlRef.current === eventSourceUrl ||
+      lastPageViewUrlModule === eventSourceUrl
+    ) {
+      lastTrackedUrlRef.current = eventSourceUrl;
+      return;
+    }
+    lastTrackedUrlRef.current = eventSourceUrl;
+    lastPageViewUrlModule = eventSourceUrl;
 
-    void trackMetaEvent("PageView");
+    const eventId = createMetaEventId();
+    void trackMetaEvent("PageView", { eventId, eventSourceUrl });
   }, [pathname, searchParams]);
 
   useEffect(() => {
