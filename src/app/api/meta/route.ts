@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
+import { resolveMetaTestEventCode } from "@/lib/metaTracking";
 
 const GRAPH_VERSION = "v21.0";
 
@@ -105,8 +106,9 @@ export async function POST(request: Request) {
   const graphBody: Record<string, unknown> = {
     data: [eventPayload],
   };
-  if (body.test_event_code?.trim()) {
-    graphBody.test_event_code = body.test_event_code.trim();
+  const testEventCode = resolveMetaTestEventCode(body.test_event_code);
+  if (testEventCode) {
+    graphBody.test_event_code = testEventCode;
   }
 
   const url = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${encodeURIComponent(accessToken)}`;

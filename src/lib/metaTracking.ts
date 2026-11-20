@@ -1,6 +1,16 @@
 export const META_PIXEL_ID =
   process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1395419915853207";
 
+/** Non-empty test code from override or `NEXT_PUBLIC_META_TEST_EVENT_CODE`. */
+export function resolveMetaTestEventCode(
+  override?: string | null,
+): string | undefined {
+  const explicit = override?.trim();
+  if (explicit) return explicit;
+  const fromEnv = process.env.NEXT_PUBLIC_META_TEST_EVENT_CODE?.trim();
+  return fromEnv || undefined;
+}
+
 export type MetaUserDataInput = {
   email?: string | null;
   phone?: string | null;
@@ -41,15 +51,19 @@ export async function trackMetaEvent(
     window.fbq("track", eventName, customData, { eventID: eventId });
   }
 
-  const payload = {
+  const testEventCode = resolveMetaTestEventCode(options.testEventCode);
+
+  const payload: Record<string, unknown> = {
     event_name: eventName,
     event_id: eventId,
     event_source_url:
       typeof window !== "undefined" ? window.location.href : undefined,
     user_data: options.userData,
     custom_data: Object.keys(customData).length ? customData : undefined,
-    test_event_code: options.testEventCode,
   };
+  if (testEventCode) {
+    payload.test_event_code = testEventCode;
+  }
 
   try {
     await fetch("/api/meta", {
