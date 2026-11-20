@@ -44,19 +44,18 @@ export function createMetaEventId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
-export async function trackMetaEvent(
+/** Meta standard event name — exact PascalCase for deduplication with Events Manager. */
+export const META_EVENT_INITIATE_CHECKOUT = "InitiateCheckout" as const;
+
+export function trackMetaEvent(
   eventName: string,
   options: MetaTrackOptions = {},
-): Promise<string> {
+): string {
   const eventId = options.eventId ?? createMetaEventId();
   const customData = options.customData ?? {};
   const eventSourceUrl =
     options.eventSourceUrl ??
     (typeof window !== "undefined" ? window.location.href : undefined);
-
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", eventName, customData, { eventID: eventId });
-  }
 
   const testEventCode = resolveMetaTestEventCode(options.testEventCode);
 
@@ -71,16 +70,18 @@ export async function trackMetaEvent(
     payload.test_event_code = testEventCode;
   }
 
-  try {
-    await fetch("/api/meta", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    });
-  } catch {
-    // CAPI is best-effort; browser pixel already fired.
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", eventName, customData, { eventID: eventId });
   }
+
+  void fetch("/api/meta", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => {
+    // CAPI is best-effort; browser pixel already fired in the same handler turn.
+  });
 
   return eventId;
 }

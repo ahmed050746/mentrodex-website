@@ -42,16 +42,12 @@ export function MetaAnalytics() {
 
       const waLink = target.closest('a[href*="wa.me"]');
       if (waLink instanceof HTMLAnchorElement) {
-        void trackMetaEvent("Contact", {
+        const eventId = createMetaEventId();
+        const eventSourceUrl = window.location.href;
+        trackMetaEvent("Lead", {
+          eventId,
+          eventSourceUrl,
           customData: { content_name: "WhatsApp link" },
-        });
-        return;
-      }
-
-      const telLink = target.closest('a[href^="tel:"]');
-      if (telLink instanceof HTMLAnchorElement) {
-        void trackMetaEvent("Contact", {
-          customData: { content_name: "Phone call link" },
         });
       }
     };
@@ -92,7 +88,11 @@ export function MetaAnalytics() {
       const text =
         messageEl?.value.trim() ||
         "Hi, I'd like to know more about the AI Web Crafts e-commerce mentorship (Rs. 4,500).";
-      void trackMetaEvent("Contact", {
+      const eventId = createMetaEventId();
+      const eventSourceUrl = window.location.href;
+      trackMetaEvent("Lead", {
+        eventId,
+        eventSourceUrl,
         customData: { content_name: "WhatsApp FAB send" },
       });
       openWhatsApp(text);

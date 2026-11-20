@@ -6,7 +6,11 @@ import {
   compressImageFile,
   formatFileSize,
 } from "@/lib/compressImage";
-import { trackMetaEvent } from "@/lib/metaTracking";
+import {
+  createMetaEventId,
+  META_EVENT_INITIATE_CHECKOUT,
+  trackMetaEvent,
+} from "@/lib/metaTracking";
 
 type PayMethod = "bank" | "easy";
 
@@ -113,7 +117,11 @@ export default function PayPageClient() {
       return;
     }
 
-    void trackMetaEvent("InitiateCheckout", {
+    const checkoutEventId = createMetaEventId();
+    const checkoutEventSourceUrl = window.location.href;
+    trackMetaEvent(META_EVENT_INITIATE_CHECKOUT, {
+      eventId: checkoutEventId,
+      eventSourceUrl: checkoutEventSourceUrl,
       userData: {
         email: fields.email || null,
         phone: fields.phone || null,
@@ -159,13 +167,6 @@ export default function PayPageClient() {
         setSubmitError(message);
         return;
       }
-      void trackMetaEvent("Lead", {
-        userData: {
-          email: fields.email || null,
-          phone: fields.phone || null,
-        },
-        customData: { content_name: "Enrollment payment form" },
-      });
       setSubmitSuccess(true);
       setModalOpen(true);
     } catch {
