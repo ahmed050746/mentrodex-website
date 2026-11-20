@@ -87,7 +87,7 @@ export function MetaAnalytics() {
     const onSend = () => {
       const text =
         messageEl?.value.trim() ||
-        "Hi, I'd like to know more about the AI Web Crafts e-commerce mentorship (Rs. 4,500).";
+        "Hi, I'd like to know more about the Mentrodex e-commerce mentorship (Rs. 4,500).";
       const eventId = createMetaEventId();
       const eventSourceUrl = window.location.href;
       trackMetaEvent("Lead", {

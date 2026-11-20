@@ -21,8 +21,8 @@ body = body.replace(
   `<div class="d-stage m-stage d-stage--static-fallback" id="desktop-hero-stage">
       <header class="d-header d-header--fallback">
         <div class="d-header__inner">
-          <a class="d-logo" href="/" aria-label="AI Web Crafts home">
-            <span class="d-logo__text">AI Web Crafts</span>
+          <a class="d-logo" href="/" aria-label="Mentrodex home">
+            <span class="d-logo__text">Mentrodex</span>
           </a>
           <a href="/pay" class="nav-enroll d-nav-enroll">
             <span class="nav-enroll__label">Enroll Now</span>

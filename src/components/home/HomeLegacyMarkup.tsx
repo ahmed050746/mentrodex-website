@@ -12,12 +12,15 @@ export default function HomeLegacyMarkup() {
             <div className="m-stage">
             <header className="m-header">
               <div className="m-header__inner">
-                <a className="m-logo" href="#" aria-label="AI Web Crafts home">
-                  <span className="m-logo__text">AI Web Crafts</span>
+                <a className="m-logo" href="/" aria-label="Mentrodex home">
+                  <span className="m-logo__text">Mentrodex</span>
                 </a>
-                <a href="/pay" className="nav-enroll">
-                  <span className="nav-enroll__label">Enroll Now</span>
-                </a>
+                <div className="m-header__actions">
+                  <span className="m-header__mentor">MD Ahmed</span>
+                  <a href="/pay" className="nav-enroll">
+                    <span className="nav-enroll__label">Enroll Now</span>
+                  </a>
+                </div>
               </div>
             </header>
       
@@ -416,13 +419,13 @@ export default function HomeLegacyMarkup() {
             <footer className="m-footer">
               <div className="m-footer__brand">
                 <a href="/">
-                   <img src="/img/logo white.png" alt="logo ai web crafts" />
+                   <img src="/img/logo white.png" alt="Mentrodex logo" />
                 </a>
                 <a href="/" className="footerLogoAnchro">
-                  <span className="m-footer__name">AI Web Crafts</span>
+                  <span className="m-footer__name">Mentrodex</span>
                 </a>
               </div>
-              <p className="m-footer__legal">© 2026 AI Web Crafts. All rights reserved.</p>
+              <p className="m-footer__legal">© 2026 Mentrodex. All rights reserved.</p>
             </footer>
           </div>
         </div>
@@ -432,8 +435,8 @@ export default function HomeLegacyMarkup() {
           <div className="d-stage m-stage d-stage--static-fallback" id="desktop-hero-stage">
             <header className="d-header d-header--fallback">
               <div className="d-header__inner">
-                <a className="d-logo" href="/" aria-label="AI Web Crafts home">
-                  <span className="d-logo__text">AI Web Crafts</span>
+                <a className="d-logo" href="/" aria-label="Mentrodex home">
+                  <span className="d-logo__text">Mentrodex</span>
                 </a>
                 <a href="/pay" className="nav-enroll d-nav-enroll">
                   <span className="nav-enroll__label">Enroll Now</span>
@@ -441,12 +444,37 @@ export default function HomeLegacyMarkup() {
               </div>
             </header>
             <section className="d-hero-fallback" aria-labelledby="d-hero-fallback-title">
+              <div className="d-hero-fallback__media" aria-hidden="true">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="d-hero-fallback__photo"
+                  src="/img/hero-mentor-desktop.png"
+                  alt=""
+                  width={480}
+                  height={640}
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </div>
+              <div className="d-hero-fallback__scrim" aria-hidden="true" />
               <div className="d-hero-fallback__inner">
-                <h1 id="d-hero-fallback-title" className="d-hero-fallback__title">
-                  <span>Don&apos;t just build a store,</span>
-                  <span className="d-hero-fallback__accent">Learn to Drive Sales</span>
-                </h1>
-                <a className="d-btn d-btn--submit d-hero-fallback__cta" href="/pay">Enroll Now</a>
+                <div className="d-hero-fallback__copy">
+                  <h1 id="d-hero-fallback-title" className="d-hero-fallback__title">
+                    <span className="d-hero-fallback__lead">
+                      Don&apos;t just build a store,
+                    </span>
+                    <span className="d-hero-fallback__headline">
+                      Learn to{" "}
+                      <span className="d-hero-fallback__accent">Drive Sales</span>
+                    </span>
+                  </h1>
+                  <a
+                    className="d-btn d-btn--submit d-hero-fallback__cta"
+                    href="/pay"
+                  >
+                    Enroll Now
+                  </a>
+                </div>
               </div>
             </section>
           </div>
@@ -825,9 +853,9 @@ export default function HomeLegacyMarkup() {
           <footer className="d-footer">
             <div className="d-footer__brand">
               <img src="/img/logo white.png" alt="" width="28" height="28" className="d-footer__logo" />
-              <span className="d-footer__name">AI Web Crafts</span>
+              <span className="d-footer__name">Mentrodex</span>
             </div>
-            <p className="d-footer__legal">© 2026 AI Web Crafts. All rights reserved.</p>
+            <p className="d-footer__legal">© 2026 Mentrodex. All rights reserved.</p>
           </footer>
         </div>
       
@@ -850,7 +878,7 @@ export default function HomeLegacyMarkup() {
                     </svg>
                   </span>
                   <div>
-                    <h2 className="fab-wa-panel__title" id="fabWaTitle">AI Web Crafts</h2>
+                    <h2 className="fab-wa-panel__title" id="fabWaTitle">Mentrodex</h2>
                     <p className="fab-wa-panel__status">Typically replies within a day</p>
                   </div>
                 </div>
@@ -866,7 +894,7 @@ export default function HomeLegacyMarkup() {
                   className="fab-wa-panel__input"
                   rows={4}
                   placeholder="Hi, I’d like to know more about the mentorship…"
-                >Hi, I'd like to know more about the AI Web Crafts e-commerce mentorship (Rs. 4,500).</textarea>
+                >Hi, I'd like to know more about the Mentrodex e-commerce mentorship (Rs. 4,500).</textarea>
               </div>
               <footer className="fab-wa-panel__foot">
                 <button type="button" className="fab-wa-panel__send" id="fabWaSend">

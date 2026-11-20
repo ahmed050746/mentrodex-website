@@ -652,7 +652,7 @@ export default function PayPageClient() {
 
       <footer className="pay-footer">
         <p>
-          © 2026 <Link href="/">AI Web Crafts</Link>. All rights reserved.
+          © 2026 <Link href="/">Mentrodex</Link>. All rights reserved.
         </p>
       </footer>
 

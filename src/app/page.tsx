@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { HomeHeaderScroll } from "@/components/home/HomeHeaderScroll";
 import HomeLegacyMarkup from "@/components/home/HomeLegacyMarkup";
 import { LegacyStyles } from "@/components/LegacyStyles";
 
@@ -12,6 +13,7 @@ export default function HomePage() {
   return (
     <>
       <LegacyStyles page="home" />
+      <HomeHeaderScroll />
       <HomeLegacyMarkup />
     </>
   );

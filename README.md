@@ -1,11 +1,11 @@
-# AI Web Crafts — Next.js (Phase 1)
+# Mentrodex — Next.js (Phase 1)
 
 Next.js App Router port of the static mentorship site in `../shopify-course`.
 
 ## Quick start
 
 ```bash
-cd c:\Users\Ahmed\Documents\code\19-nov\aiwebcrafts-next
+cd c:\Users\Ahmed\Documents\code\20-nov\mentrodex-website
 npm install
 npm run dev
 ```

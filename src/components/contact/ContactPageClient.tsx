@@ -123,7 +123,7 @@ export default function ContactPageClient() {
         <Link className="c-topbar__brand" href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/img/logo.png" alt="" />
-          <span>AI Web Crafts</span>
+          <span>Mentrodex</span>
         </Link>
       </header>
 
@@ -439,7 +439,7 @@ export default function ContactPageClient() {
 
       <footer className="c-footer">
         <p>
-          © 2026 <Link href="/">AI Web Crafts</Link>. All rights reserved.
+          © 2026 <Link href="/">Mentrodex</Link>. All rights reserved.
         </p>
       </footer>
 

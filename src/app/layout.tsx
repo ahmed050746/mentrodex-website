@@ -21,11 +21,11 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "AI Web Crafts — E-Commerce Mentorship",
-    template: "%s | AI Web Crafts",
+    default: "Mentrodex — E-Commerce Mentorship",
+    template: "%s | Mentrodex",
   },
   description:
-    "1-on-1 Shopify and dropshipping mentorship in Pakistan with AI Web Crafts.",
+    "1-on-1 Shopify and dropshipping mentorship in Pakistan with Mentrodex.",
   icons: { icon: "/img/logo.png" },
 };
 

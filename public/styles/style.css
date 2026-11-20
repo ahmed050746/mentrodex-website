@@ -1,5 +1,5 @@
 /* =============================================================================
-   AI Web Crafts — responsive landing
+   Mentrodex — responsive landing
    - Mobile-first tokens match mobileds / Figma mobile export
    - Desktop block matches desktop Figma export (min-width: 900px)
    ============================================================================= */
@@ -588,8 +588,14 @@ input {
   transform: rotate(-45deg) translateY(2px);
 }
 
-/* Footer — compact on mobile */
-.layout--mobile .m-footer {
+/* Footer — compact on mobile, full width of .m-shell */
+.layout--mobile .m-footer,
+#layout-mobile .m-footer {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
   padding: 22px 16px 20px;
   background: var(--color-text);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -602,6 +608,14 @@ input {
   justify-content: center;
   gap: 8px;
   margin-bottom: 10px;
+}
+
+#layout-mobile .m-footer__brand img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .layout--mobile .m-footer__mark {
@@ -1958,7 +1972,7 @@ body.modal-open {
   }
 }
 /* =============================================================================
-   AI Web Crafts — Improved visual layer (v2)
+   Mentrodex — Improved visual layer (v2)
    Reuses layout + structure from style.css; enhances typography, depth,
    gradients, motion, and focus states. Scope: html.page-v2
    ============================================================================= */
@@ -2000,8 +2014,9 @@ html.page-v2 .layout--mobile .m-header {
   left: 0;
   right: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 1px 0 rgba(var(--color-text-rgb), 0.06), 0 12px 40px -28px rgba(var(--color-text-rgb), 0.12);
+  background: var(--m-hero-canvas, #07070b);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
 }
 
 html.page-v2 .layout--mobile .m-logo__mark {
@@ -2651,8 +2666,7 @@ button[type="submit"]:disabled {
 
   .layout--mobile .m-hero__inner,
   .layout--mobile .m-lead__inner,
-  .layout--mobile .m-stats,
-  .layout--mobile .m-footer {
+  .layout--mobile .m-stats {
     max-width: min(560px, 90vw);
     margin-left: auto;
     margin-right: auto;
@@ -2916,7 +2930,7 @@ button[type="submit"]:disabled {
     linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
     linear-gradient(rgba(var(--color-primary-rgb), 0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--color-primary-rgb), 0.12) 1px, transparent 1px);
-  background-size: 26px 26px;
+  background-size: 40px 40px;
   background-position: center top;
   -webkit-mask-image: radial-gradient(ellipse 95% 70% at 50% 8%, #000 0%, transparent 72%);
   mask-image: radial-gradient(ellipse 95% 70% at 50% 8%, #000 0%, transparent 72%);
@@ -3093,7 +3107,7 @@ button[type="submit"]:disabled {
   }
 
   #layout-mobile .m-hero__grid {
-    background-size: 22px 22px;
+    background-size: 36px 36px;
     opacity: 0.92;
   }
 }
@@ -3378,7 +3392,7 @@ button[type="submit"]:disabled {
   border-radius: 14px;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
-  box-shadow: 0 10px 24px -14px rgba(var(--color-text-rgb), 0.25);
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -3389,7 +3403,7 @@ button[type="submit"]:disabled {
   margin-inline: 0;
   border-radius: 20px;
   border: 1px solid rgba(17, 17, 24, 0.08);
-  box-shadow: 0 16px 32px -24px rgba(17, 17, 24, 0.45);
+  box-shadow: none;
   background: transparent;
   overflow: hidden;
 }
@@ -3425,7 +3439,7 @@ button[type="submit"]:disabled {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: var(--color-bg-alt);
-  box-shadow: 0 8px 18px -14px rgba(var(--color-text-rgb), 0.45);
+  box-shadow: none;
 }
 
 #layout-mobile .m-testi__card:not(:first-child) .m-testi__media {
@@ -3443,7 +3457,7 @@ button[type="submit"]:disabled {
 
 #layout-mobile .m-testi__card:not(:first-child).is-story-active {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-soft);
+  box-shadow: none;
 }
 
 #layout-mobile .m-testi__card:not(:first-child) .m-testi__body {
@@ -4767,9 +4781,7 @@ button[type="submit"]:disabled {
 
 #layout-desktop .d-learn {
   padding: 96px 32px;
-  /* Match mobile .m-learn dark band */
-  background: #07070b;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  /* Light band — colors from design-system.css (#layout-desktop .d-main > .d-learn) */
 }
 
 #layout-desktop .d-learn__inner {
@@ -4798,7 +4810,7 @@ button[type="submit"]:disabled {
   line-height: 46px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--text-heading);
 }
 
 #layout-desktop .d-learn__sub {
@@ -4806,7 +4818,7 @@ button[type="submit"]:disabled {
   max-width: 420px;
   font-size: 18px;
   line-height: 28px;
-  color: #a1a1aa;
+  color: var(--text-body);
 }
 
 #layout-desktop .d-learn__item {
@@ -4814,7 +4826,7 @@ button[type="submit"]:disabled {
   grid-template-columns: 64px minmax(0, 1fr);
   gap: 20px;
   padding: 24px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border);
 }
 
 #layout-desktop .d-learn__item:first-child {
@@ -4828,12 +4840,12 @@ button[type="submit"]:disabled {
   font-weight: 800;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: rgba(141, 132, 246, 0.42);
+  color: rgba(var(--primary-rgb), 0.35);
   transition: color 0.25s ease;
 }
 
 #layout-desktop .d-learn__item:hover .d-learn__num {
-  color: #8d84f6;
+  color: var(--primary);
 }
 
 #layout-desktop .d-learn__item-title {
@@ -4841,14 +4853,14 @@ button[type="submit"]:disabled {
   font-size: 19px;
   line-height: 26px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-heading);
 }
 
 #layout-desktop .d-learn__item-text {
   margin: 6px 0 0;
   font-size: 16px;
   line-height: 24px;
-  color: #a1a1aa;
+  color: var(--text-body);
 }
 
 @media (max-width: 1100px) {
@@ -6067,9 +6079,11 @@ button[type="submit"]:disabled {
    Header + hero = one stage (mobile + desktop)
    Header sits inside the same canvas as the hero — no separate bar.
    ============================================================================= */
-:is(#layout-mobile, #layout-desktop) .m-stage, #layout-desktop .d-stage {
+:is(#layout-mobile, #layout-desktop) .m-stage,
+#layout-desktop .d-stage {
+  --m-hero-canvas: #07070b;
   position: relative;
-  background: #07070b;
+  background: var(--m-hero-canvas);
   padding-top: 0;
 }
 
@@ -6085,13 +6099,21 @@ html.page-v2 #layout-mobile .m-header {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  background: transparent;
+  background: var(--m-hero-canvas, #07070b);
   border-bottom: 1px solid transparent;
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   z-index: 200;
-  transition: background-color 0.22s ease, box-shadow 0.22s ease, backdrop-filter 0.22s ease;
+  transition: background-color 0.22s ease, box-shadow 0.22s ease, backdrop-filter 0.22s ease,
+    border-color 0.22s ease;
+}
+
+/* Hero: same base color as .m-stage / .m-hero */
+html.page-v2 #layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled),
+#layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled) {
+  background: var(--m-hero-canvas, #07070b);
+  border-bottom-color: transparent;
 }
 
 #layout-mobile .m-header.is-scrolled,
@@ -6108,6 +6130,29 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
 #layout-mobile .m-header.is-past-hero .m-logo__text {
   color: var(--text-heading);
   text-shadow: none;
+}
+
+#layout-mobile .m-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+#layout-mobile .m-header__mentor {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+#layout-mobile .m-header.is-past-hero .m-header__mentor {
+  display: none;
 }
 
 #layout-mobile .m-logo__text {
@@ -6144,6 +6189,10 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
   pointer-events: auto;
   transform: none;
   animation: nav-enroll-enter 0.28s ease;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-enroll::before {
+  display: none;
 }
 
 @keyframes nav-enroll-enter {
@@ -6376,10 +6425,15 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
     );
 }
 
+#layout-mobile .m-hero__grid {
+  background-size: 40px 40px;
+}
+
 #layout-desktop .m-hero__grid {
   background-position: 0 0;
   -webkit-mask-image: none;
   mask-image: none;
+  background-size: 24px 24px;
 }
 
 :is(#layout-mobile, #layout-desktop) .m-hero__grid::after {
@@ -6398,6 +6452,10 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
   transform-origin: center bottom;
   -webkit-mask-image: linear-gradient(to top, transparent, #000 32%, #000 72%, transparent);
   mask-image: linear-gradient(to top, transparent, #000 32%, #000 72%, transparent);
+}
+
+#layout-mobile .m-hero__grid::after {
+  background-size: 40px 40px;
 }
 
 #layout-mobile .m-hero__photo {
@@ -6538,11 +6596,14 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
 #layout-mobile .m-header__inner {
   align-items: center;
   width: 100%;
-  justify-content: center;
+  max-width: none;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-#layout-mobile .m-header.is-past-hero .m-header__inner {
-  justify-content: space-between;
+#layout-desktop .d-stage {
+  padding-top: 0;
+  background: #07070b;
 }
 
 #layout-mobile .m-main {

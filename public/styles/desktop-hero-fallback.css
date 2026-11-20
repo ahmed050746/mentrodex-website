@@ -1,20 +1,100 @@
-/* Phase 1 simplified desktop hero (replaces hero-studio embed) */
+/* Desktop hero — centered mentor background + overlay copy */
+/* Stable offset (logo line box + vertical padding) — avoids JS resize jump on load */
+#layout-desktop #desktop-hero-stage.d-stage--static-fallback {
+  --d-fallback-header-offset: calc(20px + 1.125rem * 1.35 + 20px);
+}
+
 .d-stage--static-fallback {
-  min-height: 72vh;
-  background: linear-gradient(
-    165deg,
-    var(--color-bg) 0%,
-    var(--color-primary-tint) 45%,
-    var(--color-bg-alt) 100%
-  );
+  min-height: min(88vh, 880px);
   display: flex;
   flex-direction: column;
 }
 
-.d-header--fallback {
-  position: relative;
-  z-index: 2;
-  padding: 16px 24px;
+#layout-desktop .d-stage.d-stage--static-fallback {
+  background-color: #08080c;
+}
+
+#layout-desktop .d-header--fallback {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 200;
+  box-sizing: border-box;
+  min-height: var(--d-fallback-header-offset, calc(20px + 1.125rem * 1.35 + 20px));
+  padding: 20px clamp(24px, 4vw, 40px);
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition:
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    backdrop-filter 0.22s ease;
+}
+
+/* Over hero: blend with stage (#08080c), hide nav CTA */
+#layout-desktop .d-header--fallback:not(.is-past-hero) {
+  background: #08080c;
+}
+
+#layout-desktop .d-header--fallback:not(.is-past-hero) .nav-enroll {
+  display: none;
+}
+
+/* Past hero: white bar + enroll (DesktopFallbackHeaderScroll) */
+#layout-desktop .d-header--fallback.is-past-hero,
+#layout-desktop .d-header--fallback.is-scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px -20px rgba(24, 24, 27, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+#layout-desktop .d-header--fallback.is-past-hero .d-logo__text {
+  color: var(--text-heading);
+}
+
+#layout-desktop .d-header--fallback.is-past-hero .nav-enroll {
+  display: inline-flex;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  animation: nav-enroll-enter 0.28s ease;
+  border-radius: 8px !important;
+  border: 0 !important;
+  background: var(--accent) !important;
+  color: var(--bg-card) !important;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  min-height: 42px;
+  padding: 0 16px;
+  box-shadow:
+    0 12px 28px -8px rgba(var(--accent-rgb), 0.45),
+    0 4px 12px -4px rgba(var(--accent-rgb), 0.25) !important;
+  filter: none;
+}
+
+#layout-desktop .d-header--fallback.is-past-hero .nav-enroll::before {
+  display: none;
+}
+
+#layout-desktop .d-header--fallback.is-past-hero .nav-enroll:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+  box-shadow:
+    0 14px 32px -8px rgba(var(--accent-rgb), 0.52),
+    0 6px 14px -4px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+#layout-desktop .d-header--fallback.is-past-hero .nav-enroll:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }
 
 .d-header--fallback .d-header__inner {
@@ -26,60 +106,193 @@
   gap: 16px;
 }
 
-.d-logo__text {
+#layout-desktop .d-header--fallback .d-logo__text {
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.125rem;
   letter-spacing: -0.02em;
-  color: var(--color-text);
+  color: #fff;
   text-decoration: none;
 }
 
 .d-hero-fallback {
+  position: relative;
   flex: 1;
-  display: grid;
-  place-items: center;
-  padding: 48px 24px 80px;
+  display: flex;
+  align-items: center;
+  min-height: min(72vh, 720px);
+  overflow: hidden;
+}
+
+.d-hero-fallback__media {
+  position: absolute;
+  top: var(--d-fallback-header-offset, calc(20px + 1.125rem * 1.35 + 20px));
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.d-hero-fallback__photo {
+  width: auto;
+  height: auto;
+  max-width: min(58vw, 560px);
+  max-height: 100%;
+  aspect-ratio: 480 / 640;
+  object-fit: contain;
+  object-position: center center;
+  filter: drop-shadow(0 28px 56px rgba(0, 0, 0, 0.45));
+}
+
+.d-hero-fallback__scrim {
+  position: absolute;
+  top: var(--d-fallback-header-offset, calc(20px + 1.125rem * 1.35 + 20px));
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(8, 8, 12, 0.94) 0%,
+      rgba(8, 8, 12, 0.78) 32%,
+      rgba(8, 8, 12, 0.42) 52%,
+      rgba(8, 8, 12, 0.28) 68%,
+      rgba(8, 8, 12, 0.35) 100%
+    ),
+  radial-gradient(
+      ellipse 80% 55% at 50% 50%,
+      transparent 35%,
+      rgba(8, 8, 12, 0.25) 100%
+    );
 }
 
 .d-hero-fallback__inner {
-  max-width: 720px;
-  text-align: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: calc(
+      var(--d-fallback-header-offset, calc(20px + 1.125rem * 1.35 + 20px)) +
+        clamp(20px, 3vw, 36px)
+    )
+    clamp(24px, 4vw, 40px)
+    clamp(32px, 5vw, 48px);
+  box-sizing: border-box;
+}
+
+.d-hero-fallback__copy {
+  max-width: min(100%, 30rem);
 }
 
 .d-hero-fallback__title {
-  margin: 0 0 28px;
+  margin: 0 0 clamp(28px, 4vw, 36px);
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--color-text);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.d-hero-fallback__lead {
+  font-size: clamp(1.125rem, 1.6vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.d-hero-fallback__headline {
+  font-size: clamp(2.35rem, 4.5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #fff;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
 }
 
 .d-hero-fallback__accent {
   background: linear-gradient(
-    90deg,
-    var(--hero-stripe-start),
-    var(--hero-stripe-end)
+    92deg,
+    var(--hero-stripe-start) 0%,
+    #c4b8ff 40%,
+    var(--hero-stripe-end) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.d-hero-fallback__cta {
+#layout-desktop .d-hero-fallback__cta.d-btn--submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 0 28px;
+  min-height: 54px;
+  padding: 0 34px;
+  border-radius: 12px;
+  font-size: 1.0625rem;
+  font-weight: 700;
   text-decoration: none;
+  color: #fff !important;
+  background: var(--accent) !important;
+  border: 0;
+  box-shadow: 0 10px 32px -8px rgba(var(--accent-rgb), 0.6);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+#layout-desktop .d-hero-fallback__cta.d-btn--submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px -8px rgba(var(--accent-rgb), 0.65);
+}
+
+@media (max-width: 960px) {
+  #layout-desktop .d-hero-fallback__photo {
+    max-width: 85vw;
+    opacity: 0.85;
+  }
+
+  #layout-desktop .d-hero-fallback__copy {
+    max-width: none;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  #layout-desktop .d-hero-fallback__title {
+    align-items: center;
+  }
+
+  #layout-desktop .d-hero-fallback__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 8, 12, 0.88) 0%,
+      rgba(8, 8, 12, 0.55) 45%,
+      rgba(8, 8, 12, 0.75) 100%
+    );
+  }
 }
 
 .d-stage--static-fallback .d-logo {
   text-decoration: none;
   color: inherit;
+}
+
+/* Mobile hero header — match stage/hero canvas (after mobile-bundle) */
+html.page-v2 #layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled) {
+  background: var(--m-hero-canvas, #07070b);
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+/* Flat mobile testimonial carousel cards (loads after mobile-bundle.css) */
+#layout-mobile .m-testi__card,
+#layout-mobile .m-testi__card:first-child,
+#layout-mobile .m-testi__card:not(:first-child),
+#layout-mobile .m-testi__card:not(:first-child).is-story-active {
+  box-shadow: none;
 }

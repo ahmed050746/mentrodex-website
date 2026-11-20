@@ -1,4 +1,4 @@
-/* AI Web Crafts — design system application layer */
+/* Mentrodex — design system application layer */
 
 /* —— Typography —— */
 body {
@@ -93,7 +93,8 @@ button:focus-visible {
 
 /* Nav enroll (when visible on scroll) */
 #layout-desktop .d-nav.is-scrolled .nav-enroll,
-#layout-mobile .m-header .nav-enroll {
+#layout-desktop .d-header--fallback.is-past-hero .nav-enroll,
+#layout-mobile .m-header.is-past-hero .nav-enroll {
   border-radius: 8px !important;
   background: var(--accent) !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
@@ -165,11 +166,16 @@ button:focus-visible {
 }
 
 /* Cards */
-#layout-desktop .d-testi__card,
-#layout-mobile .m-testi__card {
+#layout-desktop .d-testi__card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: 0 12px 32px -24px rgba(24, 24, 27, 0.12);
+}
+
+#layout-mobile .m-testi__card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: none;
 }
 
 /* Links & brand accents */
