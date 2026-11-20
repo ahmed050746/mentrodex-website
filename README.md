@@ -29,9 +29,10 @@ Run SQL in Supabase SQL editor (in order):
 1. `supabase/migrations/003_orders.sql` — `orders` table
 2. `supabase/migrations/004_orders_image_upload.sql` — `image_upload` column
 3. `supabase/migrations/005_storage_payment_screenshots.sql` — `payment-screenshots` bucket + policies
-4. `supabase/migrations/001_initial.sql` — optional `contact_leads` for `/contact`
+4. `supabase/migrations/007_orders_country_and_value.sql` — `country` + `value` columns (if upgrading an older project)
+5. `supabase/migrations/001_initial.sql` — optional `contact_leads` for `/contact`
 
-**`orders` columns:** `order_id`, `city`, `country_value`, `currency`, `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
+**`orders` columns:** `order_id`, `city`, `country`, `currency`, `value` (default `4500`), `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
 
 Payment screenshots are uploaded server-side to Storage bucket **`payment-screenshots`**; `image_upload` stores the public URL. If uploads fail with permission errors, add **`SUPABASE_SERVICE_ROLE_KEY`** to `.env.local` (Dashboard → Settings → API → service_role, server-only).
 

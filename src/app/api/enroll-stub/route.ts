@@ -1,3 +1,5 @@
+import { COURSE_CURRENCY, COURSE_PRICE_PKR } from "@/lib/coursePrice";
+import { normalizePakPhone } from "@/lib/normalizePakPhone";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSupabaseConfig } from "@/lib/supabase/env";
 import { NextResponse } from "next/server";
@@ -10,7 +12,11 @@ const ALLOWED_TYPES = new Set([
   "image/webp",
 ]);
 
-const DEFAULT_CURRENCY = "PKR";
+function parseOrderValue(raw: FormDataEntryValue | null): number {
+  if (raw == null || raw === "") return COURSE_PRICE_PKR;
+  const n = Number(String(raw).trim());
+  return Number.isFinite(n) && n > 0 ? n : COURSE_PRICE_PKR;
+}
 
 function extFromMime(mime: string): string {
   switch (mime) {
@@ -70,12 +76,24 @@ export async function POST(request: Request) {
 
   const first_name = String(form.get("fn") ?? "").trim();
   const last_name = String(form.get("ln") ?? "").trim();
-  const phone_number = String(form.get("phone") ?? "").trim();
+  const phoneRaw = String(form.get("phone") ?? "").trim();
   const screenshot = form.get("screenshot");
 
-  if (!first_name || !last_name || !phone_number) {
+  if (!first_name || !last_name || !phoneRaw) {
     return NextResponse.json(
       { ok: false, error: "Missing required fields (name and phone)." },
+      { status: 400 },
+    );
+  }
+
+  const phone_number = normalizePakPhone(phoneRaw);
+  if (!phone_number) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Invalid phone number. Use a Pakistan mobile (e.g. 0300 1234567).",
+      },
       { status: 400 },
     );
   }
@@ -105,9 +123,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const country_value = String(form.get("phoneCountry") ?? "").trim() || null;
+  const country = String(form.get("country") ?? "").trim() || null;
   const city = String(form.get("city") ?? "").trim() || null;
-  const currency = String(form.get("currency") ?? "").trim() || DEFAULT_CURRENCY;
+  const currency =
+    String(form.get("currency") ?? "").trim() || COURSE_CURRENCY;
+  const value = parseOrderValue(form.get("value"));
   const event_name =
     String(form.get("event_name") ?? "").trim() ||
     "payment_screenshot_submitted";
@@ -150,8 +170,9 @@ export async function POST(request: Request) {
     .insert({
       order_id,
       city,
-      country_value,
+      country,
       currency,
+      value,
       first_name,
       last_name,
       phone_number,

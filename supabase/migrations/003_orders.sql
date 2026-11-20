@@ -1,11 +1,12 @@
--- Main order / enrollment record (column names match your spec; hyphen → country_value)
+-- Main order / enrollment record
 
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   order_id text not null unique,
   city text,
-  country_value text,
+  country text,
   currency text not null default 'PKR',
+  value numeric not null default 4500,
   first_name text not null,
   last_name text not null,
   phone_number text,

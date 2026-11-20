@@ -6,6 +6,8 @@ import {
   compressImageFile,
   formatFileSize,
 } from "@/lib/compressImage";
+import { COURSE_CURRENCY, COURSE_PRICE_PKR } from "@/lib/coursePrice";
+import { normalizePakPhone } from "@/lib/normalizePakPhone";
 import {
   createMetaEventId,
   META_EVENT_INITIATE_CHECKOUT,
@@ -34,7 +36,7 @@ export default function PayPageClient() {
     fn: "",
     ln: "",
     phone: "",
-    phoneCountry: "PK",
+    country: "PK",
     email: "",
     city: "",
   });
@@ -49,7 +51,12 @@ export default function PayPageClient() {
     const next: Record<string, string> = {};
     if (!fields.fn.trim()) next.fn = "Please enter your first name.";
     if (!fields.ln.trim()) next.ln = "Please enter your last name.";
-    if (!fields.phone.trim()) next.phone = "Please enter your phone number.";
+    if (!fields.phone.trim()) {
+      next.phone = "Please enter your phone number.";
+    } else if (!normalizePakPhone(fields.phone)) {
+      next.phone =
+        "Enter a valid Pakistan mobile (e.g. 0300 1234567 or 923321319363).";
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
       next.email = "Please enter a valid email address.";
     if (!fields.city.trim()) next.city = "Please enter your city.";
@@ -117,6 +124,17 @@ export default function PayPageClient() {
       return;
     }
 
+    const phoneNumber = normalizePakPhone(fields.phone);
+    if (!phoneNumber) {
+      setErrors((prev) => ({
+        ...prev,
+        phone:
+          "Enter a valid Pakistan mobile (e.g. 0300 1234567 or 923321319363).",
+      }));
+      setStep(1);
+      return;
+    }
+
     const checkoutEventId = createMetaEventId();
     const checkoutEventSourceUrl = window.location.href;
     trackMetaEvent(META_EVENT_INITIATE_CHECKOUT, {
@@ -124,13 +142,13 @@ export default function PayPageClient() {
       eventSourceUrl: checkoutEventSourceUrl,
       userData: {
         email: fields.email || null,
-        phone: fields.phone || null,
+        phone: phoneNumber,
         firstName: fields.fn || null,
         lastName: fields.ln || null,
       },
       customData: {
-        currency: "PKR",
-        value: 4500,
+        currency: COURSE_CURRENCY,
+        value: COURSE_PRICE_PKR,
       },
     });
 
@@ -140,12 +158,13 @@ export default function PayPageClient() {
       const formData = new FormData();
       formData.append("fn", fields.fn);
       formData.append("ln", fields.ln);
-      formData.append("phone", fields.phone);
-      formData.append("phoneCountry", fields.phoneCountry);
+      formData.append("phone", phoneNumber);
+      formData.append("country", fields.country);
       formData.append("email", fields.email);
       formData.append("city", fields.city);
       formData.append("payment_method", method);
-      formData.append("currency", "PKR");
+      formData.append("currency", COURSE_CURRENCY);
+      formData.append("value", String(COURSE_PRICE_PKR));
       formData.append("event_name", "payment_screenshot_submitted");
       formData.append("screenshot", screenshotFile);
 
@@ -265,9 +284,9 @@ export default function PayPageClient() {
                     className="d-field__input pay-phone-country"
                     id="c-phone-country"
                     aria-label="Phone country"
-                    value={fields.phoneCountry}
+                    value={fields.country}
                     onChange={(e) =>
-                      setFields((f) => ({ ...f, phoneCountry: e.target.value }))
+                      setFields((f) => ({ ...f, country: e.target.value }))
                     }
                   >
                     <option value="PK">Pakistan</option>

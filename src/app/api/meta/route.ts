@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
+import { normalizePakPhone } from "@/lib/normalizePakPhone";
 import { resolveMetaTestEventCode } from "@/lib/metaTracking";
 
 const GRAPH_VERSION = "v21.0";
@@ -24,10 +25,10 @@ function hashPII(value: string): string {
     .digest("hex");
 }
 
-function hashPhone(phone: string): string {
-  const digits = phone.replace(/\D/g, "");
-  if (!digits) return "";
-  return createHash("sha256").update(digits).digest("hex");
+function hashPhoneForMeta(phone: string): string | null {
+  const normalized = normalizePakPhone(phone);
+  if (!normalized) return null;
+  return createHash("sha256").update(normalized).digest("hex");
 }
 
 function parseCookie(cookieHeader: string | null, name: string): string | undefined {
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
 
   const phone = body.user_data?.phone?.trim();
   if (phone) {
-    const hashed = hashPhone(phone);
+    const hashed = hashPhoneForMeta(phone);
     if (hashed) userData.ph = [hashed];
   }
 
