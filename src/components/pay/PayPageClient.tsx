@@ -6,6 +6,7 @@ import {
   compressImageFile,
   formatFileSize,
 } from "@/lib/compressImage";
+import { trackMetaEvent } from "@/lib/metaTracking";
 
 type PayMethod = "bank" | "easy";
 
@@ -144,6 +145,13 @@ export default function PayPageClient() {
         setSubmitError(message);
         return;
       }
+      void trackMetaEvent("Lead", {
+        userData: {
+          email: fields.email || null,
+          phone: fields.phone || null,
+        },
+        customData: { content_name: "Enrollment payment form" },
+      });
       setSubmitSuccess(true);
       setModalOpen(true);
     } catch {

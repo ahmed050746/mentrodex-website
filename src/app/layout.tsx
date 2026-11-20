@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Suspense } from "react";
+import { MetaAnalytics } from "@/components/meta/MetaAnalytics";
+import { MetaPixel } from "@/components/meta/MetaPixel";
 import "./globals.css";
 
 const inter = Inter({
@@ -36,7 +39,13 @@ export default function RootLayout({
       lang="en"
       className={`page-v2 ${inter.variable} ${plusJakarta.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <MetaPixel />
+        <Suspense fallback={null}>
+          <MetaAnalytics />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
+import { trackMetaEvent } from "@/lib/metaTracking";
 
 const QUIZ = [
   {
@@ -108,6 +109,10 @@ export default function ContactPageClient() {
         );
         return;
       }
+      void trackMetaEvent("Lead", {
+        userData: { email: email || null, phone },
+        customData: { content_name: "Contact form" },
+      });
       setModalOpen(true);
     } finally {
       setSubmitting(false);
