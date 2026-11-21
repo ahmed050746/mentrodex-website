@@ -5426,6 +5426,16 @@ button[type="submit"]:disabled {
   border-radius: 0;
 }
 
+.lec .lec__media > .lec__idle-poster {
+  object-fit: cover;
+}
+
+#layout-mobile .lec,
+#layout-desktop .lec {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 560px;
+}
+
 #layout-mobile .lec .lec__media.is-playing,
 #layout-desktop .lec .lec__media.is-playing,
 #layout-mobile .lec .lec__media:has(> .play-button:only-child),

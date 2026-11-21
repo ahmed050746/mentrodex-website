@@ -18,13 +18,16 @@ export function LectureVideoSection({ titleId }: Props) {
   const bunnyThumbs = useBunnyThumbnails(lectures.map((l) => l.bunny));
 
   const embedSrc = useMemo(() => {
-    if (!active?.bunny) return null;
+    if (!playing || !active?.bunny) return null;
     return bunnyEmbedUrl(active.bunny, {
-      autoplay: playing,
+      autoplay: true,
       preload: true,
-      muted: playing,
+      muted: true,
     });
   }, [active?.bunny, active?.id, playing]);
+
+  const idlePoster =
+    bunnyThumbs[active.bunny] || active.thumbnail?.trim() || "";
 
   const selectLecture = useCallback(
     (index: number) => {
@@ -76,12 +79,21 @@ export function LectureVideoSection({ titleId }: Props) {
             >
               {embedSrc ? (
                 <iframe
-                  key={`${active.id}-${playing ? "play" : "ready"}`}
+                  key={active.id}
                   src={embedSrc}
                   title={active.title}
                   loading="lazy"
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                   allowFullScreen
+                />
+              ) : idlePoster ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={idlePoster}
+                  alt=""
+                  className="lec__idle-poster"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : null}
               {!playing ? (

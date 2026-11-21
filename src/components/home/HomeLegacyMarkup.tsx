@@ -1,5 +1,6 @@
 /* Auto-generated from shopify-course/index.html — edit via scripts/convert-home-body.mjs */
 import { DesktopHeroFallbackPhoto } from "@/components/home/DesktopHeroFallbackPhoto";
+import { LayoutGatedClient } from "@/components/LayoutGatedClient";
 import { LectureVideoSection } from "@/components/home/LectureVideoSection";
 import { TestimonialVideoSection } from "@/components/home/TestimonialVideoSection";
 
@@ -52,7 +53,9 @@ export default function HomeLegacyMarkup() {
       
             <main className="m-main">
               
-              <TestimonialVideoSection layout="mobile" />
+              <LayoutGatedClient layout="mobile">
+                <TestimonialVideoSection layout="mobile" />
+              </LayoutGatedClient>
       
               <section className="m-fit" aria-labelledby="m-fit-title">
                 <div className="m-fit__inner">
@@ -297,7 +300,9 @@ export default function HomeLegacyMarkup() {
                 </div>
               </section>
       
-              <LectureVideoSection titleId="m-lec-title" />
+              <LayoutGatedClient layout="mobile">
+                <LectureVideoSection titleId="m-lec-title" />
+              </LayoutGatedClient>
       
               <section className="price" aria-labelledby="m-price-title">
                 <div className="price__inner">
@@ -386,7 +391,9 @@ export default function HomeLegacyMarkup() {
             </section>
           </div>
       <main className="d-main">
-            <TestimonialVideoSection layout="desktop" />
+            <LayoutGatedClient layout="desktop">
+              <TestimonialVideoSection layout="desktop" />
+            </LayoutGatedClient>
       
             <section className="d-fit" aria-labelledby="d-fit-title">
               <div className="d-fit__inner">
@@ -622,7 +629,9 @@ export default function HomeLegacyMarkup() {
               </div>
             </section>
       
-            <LectureVideoSection titleId="d-lec-title" />
+            <LayoutGatedClient layout="desktop">
+              <LectureVideoSection titleId="d-lec-title" />
+            </LayoutGatedClient>
       
             <section className="price" aria-labelledby="d-price-title">
               <div className="price__inner">

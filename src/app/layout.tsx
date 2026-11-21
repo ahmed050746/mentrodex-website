@@ -39,6 +39,11 @@ export default function RootLayout({
       lang="en"
       className={`page-v2 ${inter.variable} ${plusJakarta.variable}`}
     >
+      <head>
+        <link rel="preconnect" href="https://player.mediadelivery.net" />
+        <link rel="dns-prefetch" href="https://video.bunnycdn.com" />
+        <link rel="dns-prefetch" href="https://vz-40eaeb89-41e.b-cdn.net" />
+      </head>
       <body>
         <MetaPixel />
         <Suspense fallback={null}>

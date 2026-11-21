@@ -25,9 +25,22 @@ export function TestimonialVideoSection({ layout }: Props) {
   const bunnyThumbs = useBunnyThumbnails(videos.map((v) => v.bunny));
 
   const inlineEmbedSrc = useMemo(() => {
-    if (isDesktop || !active?.bunny) return null;
-    return bunnyEmbedUrl(active.bunny, { autoplay });
+    if (isDesktop || !autoplay || !active?.bunny) return null;
+    return bunnyEmbedUrl(active.bunny, {
+      autoplay: true,
+      preload: true,
+      muted: true,
+    });
   }, [active?.bunny, autoplay, isDesktop]);
+
+  const inlinePoster = useMemo(() => {
+    if (isDesktop || autoplay) return null;
+    const staticPoster = active?.thumbnail?.trim();
+    const bunnyPoster = active?.bunny
+      ? bunnyThumbs[active.bunny]
+      : undefined;
+    return staticPoster || bunnyPoster || null;
+  }, [isDesktop, autoplay, active, bunnyThumbs]);
 
   const modalEmbedSrc = useMemo(() => {
     if (!modalOpen || !isDesktop || !active?.bunny) return null;
@@ -89,7 +102,7 @@ export function TestimonialVideoSection({ layout }: Props) {
               >
                 {inlineEmbedSrc ? (
                   <iframe
-                    key={`${active.id}-${autoplay ? "autoplay" : "ready"}`}
+                    key={active.id}
                     className="testi-vswitch__iframe"
                     src={inlineEmbedSrc}
                     title={active.title}
@@ -97,7 +110,21 @@ export function TestimonialVideoSection({ layout }: Props) {
                     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                     allowFullScreen
                   />
-                ) : null}
+                ) : inlinePoster ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={inlinePoster}
+                    alt=""
+                    className="testi-vswitch__iframe testi-vswitch__inline-poster"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span
+                    className="testi-vswitch__pick-poster testi-vswitch__pick-poster--loading"
+                    aria-hidden="true"
+                  />
+                )}
               </div>
 
               <p className="testi-vswitch__now">

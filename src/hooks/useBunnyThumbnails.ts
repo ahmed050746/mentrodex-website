@@ -1,40 +1,41 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { fetchBunnyOEmbedThumbnail } from "@/lib/bunny-embed";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
+import {
+  ensureBunnyThumbnail,
+  getBunnyThumbnailCacheSnapshot,
+  subscribeBunnyThumbnailCache,
+} from "@/lib/bunny-thumbnail-cache";
 
 export function useBunnyThumbnails(bunnyRefs: string[]) {
-  const keys = useMemo(
-    () => [...new Set(bunnyRefs.filter(Boolean))].sort().join("\0"),
+  const map = useSyncExternalStore(
+    subscribeBunnyThumbnailCache,
+    getBunnyThumbnailCacheSnapshot,
+    (): Record<string, string> => ({}),
+  );
+
+  const unique = useMemo(
+    () => [...new Set(bunnyRefs.filter(Boolean))],
     [bunnyRefs],
   );
-  const unique = useMemo(() => (keys ? keys.split("\0") : []), [keys]);
-
-  const [byRef, setByRef] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!unique.length) return;
-    let cancelled = false;
 
-    void (async () => {
-      const entries = await Promise.all(
-        unique.map(async (ref) => {
-          const url = await fetchBunnyOEmbedThumbnail(ref);
-          return [ref, url] as const;
-        }),
-      );
-      if (cancelled) return;
-      const next: Record<string, string> = {};
-      for (const [ref, url] of entries) {
-        if (url) next[ref] = url;
+    const load = () => {
+      for (const ref of unique) {
+        void ensureBunnyThumbnail(ref);
       }
-      setByRef(next);
-    })();
-
-    return () => {
-      cancelled = true;
     };
+
+    if (typeof requestIdleCallback === "function") {
+      const id = requestIdleCallback(load, { timeout: 4000 });
+      return () => cancelIdleCallback(id);
+    }
+
+    const timer = setTimeout(load, 500);
+    return () => clearTimeout(timer);
   }, [unique]);
 
-  return byRef;
+  return map;
 }

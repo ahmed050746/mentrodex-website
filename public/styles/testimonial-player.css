@@ -1,5 +1,20 @@
 /* Testimonial video switcher — main player + thumbnail list (mobile + desktop) */
 
+#layout-mobile .m-testi.testi-vswitch,
+#layout-desktop .d-testi.testi-vswitch {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
+}
+
+.testi-vswitch__inline-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
 .testi-vswitch__layout {
   display: flex;
   flex-direction: column;

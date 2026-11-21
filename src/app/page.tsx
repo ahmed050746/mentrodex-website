@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BunnyPrefetchProvider } from "@/components/BunnyPrefetchProvider";
 import { HomeHeaderScroll } from "@/components/home/HomeHeaderScroll";
 import HomeLegacyMarkup from "@/components/home/HomeLegacyMarkup";
 import { LegacyStyles } from "@/components/LegacyStyles";
@@ -15,13 +16,22 @@ export default function HomePage() {
       <link
         rel="preload"
         as="image"
+        href="/img/hero-mentor.webp"
+        type="image/webp"
+        media="(max-width: 899px)"
+      />
+      <link
+        rel="preload"
+        as="image"
         href="/img/hero-mentor-desktop.webp"
         type="image/webp"
         media="(min-width: 900px)"
       />
       <LegacyStyles page="home" />
-      <HomeHeaderScroll />
-      <HomeLegacyMarkup />
+      <BunnyPrefetchProvider>
+        <HomeHeaderScroll />
+        <HomeLegacyMarkup />
+      </BunnyPrefetchProvider>
     </>
   );
 }
