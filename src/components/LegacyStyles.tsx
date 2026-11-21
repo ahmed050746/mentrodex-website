@@ -1,33 +1,37 @@
-const styles = [
-  "/styles/design-tokens.css",
-  "/styles/design-system.css",
-  "/styles/style.css",
-  "/styles/mobile-bundle.css",
-  "/styles/style-desktop-hero.css",
-  "/styles/desktop-hero-fallback.css",
-] as const;
+type Stylesheet = {
+  href: string;
+  media?: string;
+};
 
-const pageStyles: Record<string, readonly string[]> = {
-  home: styles,
+const homeStyles: Stylesheet[] = [
+  { href: "/styles/design-tokens.css" },
+  { href: "/styles/design-system.css" },
+  { href: "/styles/style.css" },
+  { href: "/styles/mobile-bundle.css", media: "(max-width: 899px)" },
+  { href: "/styles/desktop-hero-fallback.css", media: "(min-width: 900px)" },
+];
+
+const pageStyles: Record<string, readonly Stylesheet[]> = {
+  home: homeStyles,
   pay: [
-    "/styles/design-tokens.css",
-    "/styles/design-system.css",
-    "/styles/style.css",
-    "/styles/pay-page.css",
+    { href: "/styles/design-tokens.css" },
+    { href: "/styles/design-system.css" },
+    { href: "/styles/style.css" },
+    { href: "/styles/pay-page.css" },
   ],
   contact: [
-    "/styles/design-tokens.css",
-    "/styles/design-system.css",
-    "/styles/style.css",
-    "/styles/contact-page.css",
+    { href: "/styles/design-tokens.css" },
+    { href: "/styles/design-system.css" },
+    { href: "/styles/style.css" },
+    { href: "/styles/contact-page.css" },
   ],
 };
 
 export function LegacyStyles({ page }: { page: keyof typeof pageStyles }) {
   return (
     <>
-      {pageStyles[page].map((href) => (
-        <link key={href} rel="stylesheet" href={href} />
+      {pageStyles[page].map(({ href, media }) => (
+        <link key={href} rel="stylesheet" href={href} {...(media ? { media } : {})} />
       ))}
     </>
   );

@@ -12,6 +12,13 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        href="/img/hero-mentor-desktop.webp"
+        type="image/webp"
+        media="(min-width: 900px)"
+      />
       <LegacyStyles page="home" />
       <HomeHeaderScroll />
       <HomeLegacyMarkup />

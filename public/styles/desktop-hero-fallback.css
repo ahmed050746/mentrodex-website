@@ -281,18 +281,3 @@
   text-decoration: none;
   color: inherit;
 }
-
-/* Mobile hero header — match stage/hero canvas (after mobile-bundle) */
-html.page-v2 #layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled) {
-  background: var(--m-hero-canvas, #07070b);
-  border-bottom-color: transparent;
-  box-shadow: none;
-}
-
-/* Flat mobile testimonial carousel cards (loads after mobile-bundle.css) */
-#layout-mobile .m-testi__card,
-#layout-mobile .m-testi__card:first-child,
-#layout-mobile .m-testi__card:not(:first-child),
-#layout-mobile .m-testi__card:not(:first-child).is-story-active {
-  box-shadow: none;
-}

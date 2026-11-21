@@ -1,4 +1,6 @@
 /* Auto-generated from shopify-course/index.html — edit via scripts/convert-home-body.mjs */
+import { DesktopHeroFallbackPhoto } from "@/components/home/DesktopHeroFallbackPhoto";
+
 export default function HomeLegacyMarkup() {
   return (
     <>
@@ -445,16 +447,7 @@ export default function HomeLegacyMarkup() {
             </header>
             <section className="d-hero-fallback" aria-labelledby="d-hero-fallback-title">
               <div className="d-hero-fallback__media" aria-hidden="true">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className="d-hero-fallback__photo"
-                  src="/img/hero-mentor-desktop.png"
-                  alt=""
-                  width={480}
-                  height={640}
-                  decoding="async"
-                  fetchPriority="high"
-                />
+                <DesktopHeroFallbackPhoto />
               </div>
               <div className="d-hero-fallback__scrim" aria-hidden="true" />
               <div className="d-hero-fallback__inner">
