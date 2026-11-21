@@ -16,6 +16,21 @@ import {
 
 type PayMethod = "bank" | "easy";
 
+const PAY_STEPS = [
+  { id: 1 as const, label: "Your Details", short: "Details" },
+  { id: 2 as const, label: "Payment", short: "Payment" },
+  { id: 3 as const, label: "Upload", short: "Upload" },
+] as const;
+
+const PHONE_COUNTRIES = [
+  { value: "PK", label: "Pakistan" },
+  { value: "SA", label: "Saudi Arabia" },
+  { value: "AE", label: "United Arab Emirates" },
+  { value: "QA", label: "Qatar" },
+  { value: "OM", label: "Oman" },
+  { value: "GB", label: "United Kingdom" },
+] as const;
+
 export default function PayPageClient() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [method, setMethod] = useState<PayMethod>("bank");
@@ -195,14 +210,76 @@ export default function PayPageClient() {
     }
   }
 
+  function goToStep(target: 1 | 2 | 3) {
+    if (target <= step) setStep(target);
+  }
+
+  const phoneCountryLabel =
+    PHONE_COUNTRIES.find((c) => c.value === fields.country)?.label ?? "Pakistan";
+
   return (
     <>
-      <header className="pay-topbar">
-        <Link className="pay-topbar__back" href="/" aria-label="Back to home">
-          Back
-        </Link>
-        <h1 className="pay-topbar__title">Enroll Now</h1>
-      </header>
+      <div className="pay-page__top">
+        <header className="pay-topbar">
+          <Link className="pay-topbar__back" href="/" aria-label="Back to home">
+            Back
+          </Link>
+          <h1 className="pay-topbar__title">Enroll Now</h1>
+        </header>
+
+        <nav className="pay-stepper" aria-label="Enrollment progress">
+          <ol className="pay-stepper__list">
+            {PAY_STEPS.map((s) => {
+              const done = step > s.id;
+              const active = step === s.id;
+              const upcoming = step < s.id;
+              const stateClass = done
+                ? "pay-stepper__item--done"
+                : active
+                  ? "pay-stepper__item--active"
+                  : "pay-stepper__item--upcoming";
+
+              return (
+                <li
+                  key={s.id}
+                  className={`pay-stepper__item ${stateClass}`}
+                  aria-current={active ? "step" : undefined}
+                  data-next-filled={step > s.id ? "true" : "false"}
+                >
+                  <button
+                    type="button"
+                    className="pay-stepper__step"
+                    disabled={upcoming}
+                    aria-label={`${s.label}${active ? ", current step" : done ? ", completed" : ""}`}
+                    onClick={() => goToStep(s.id)}
+                  >
+                    <span className="pay-stepper__num" aria-hidden="true">
+                      {done ? (
+                        <svg
+                          className="pay-stepper__check"
+                          viewBox="0 0 16 16"
+                          width={14}
+                          height={14}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
+                        </svg>
+                      ) : (
+                        s.id
+                      )}
+                    </span>
+                    <span className="pay-stepper__label">{s.short}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      </div>
 
       <main>
         <section
@@ -212,17 +289,9 @@ export default function PayPageClient() {
           hidden={step !== 1}
         >
           <div className="pay-step__inner">
-            <header className="pay-step__head">
-              <span className="pay-step__num" aria-hidden="true">
-                1
-              </span>
-              <div>
-                <p className="pay-step__kicker">Step 1</p>
-                <h2 id="pay-step-1-title" className="pay-step__title">
-                  Your Details
-                </h2>
-              </div>
-            </header>
+            <h2 id="pay-step-1-title" className="pay-step__title pay-step__title--solo">
+              Your Details
+            </h2>
 
             <div className="confirm-card">
               <div className="d-field">
@@ -280,22 +349,26 @@ export default function PayPageClient() {
                   Phone Number *
                 </label>
                 <div className="pay-phone-row">
-                  <select
-                    className="d-field__input pay-phone-country"
-                    id="c-phone-country"
-                    aria-label="Phone country"
-                    value={fields.country}
-                    onChange={(e) =>
-                      setFields((f) => ({ ...f, country: e.target.value }))
-                    }
-                  >
-                    <option value="PK">Pakistan</option>
-                    <option value="SA">Saudi Arabia</option>
-                    <option value="AE">United Arab Emirates</option>
-                    <option value="QA">Qatar</option>
-                    <option value="OM">Oman</option>
-                    <option value="GB">United Kingdom</option>
-                  </select>
+                  <div className="pay-phone-country-wrap">
+                    <select
+                      className="d-field__input pay-phone-country"
+                      id="c-phone-country"
+                      aria-label="Phone country"
+                      value={fields.country}
+                      onChange={(e) =>
+                        setFields((f) => ({ ...f, country: e.target.value }))
+                      }
+                    >
+                      {PHONE_COUNTRIES.map((c) => (
+                        <option key={c.value} value={c.value}>
+                          {c.label}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="pay-phone-country-sizer" aria-hidden="true">
+                      {phoneCountryLabel}
+                    </span>
+                  </div>
                   <input
                     className="d-field__input pay-phone-number"
                     type="tel"
@@ -382,17 +455,9 @@ export default function PayPageClient() {
           hidden={step !== 2}
         >
           <div className="pay-step__inner">
-            <header className="pay-step__head">
-              <span className="pay-step__num" aria-hidden="true">
-                2
-              </span>
-              <div>
-                <p className="pay-step__kicker">Step 2</p>
-                <h2 id="pay-step-2-title" className="pay-step__title">
-                  Payment Method
-                </h2>
-              </div>
-            </header>
+            <h2 id="pay-step-2-title" className="pay-step__title pay-step__title--solo">
+              Payment Method
+            </h2>
 
             <div className="pay-tabs" role="tablist">
               <button
@@ -515,17 +580,9 @@ export default function PayPageClient() {
           hidden={step !== 3}
         >
           <div className="pay-step__inner">
-            <header className="pay-step__head">
-              <span className="pay-step__num" aria-hidden="true">
-                3
-              </span>
-              <div>
-                <p className="pay-step__kicker">Step 3</p>
-                <h2 id="pay-step-3-title" className="pay-step__title">
-                  Upload Payment Screenshot / Image
-                </h2>
-              </div>
-            </header>
+            <h2 id="pay-step-3-title" className="pay-step__title pay-step__title--solo">
+              Upload Payment Screenshot / Image
+            </h2>
 
             <form className="confirm-card" onSubmit={submitConfirmation}>
               <div className="d-field">
