@@ -1,5 +1,6 @@
 /* Auto-generated from shopify-course/index.html — edit via scripts/convert-home-body.mjs */
 import { DesktopHeroFallbackPhoto } from "@/components/home/DesktopHeroFallbackPhoto";
+import { TestimonialVideoSection } from "@/components/home/TestimonialVideoSection";
 
 export default function HomeLegacyMarkup() {
   return (
@@ -50,72 +51,7 @@ export default function HomeLegacyMarkup() {
       
             <main className="m-main">
               
-              <section className="m-testi" aria-labelledby="m-testi-title">
-                <div className="m-testi__head">
-                  <span className="m-testi__eyebrow">Social proof</span>
-                  <h2 id="m-testi-title" className="m-testi__title">What Others Say</h2>
-                  <p className="m-testi__sub">Hear from students &amp; professionals.</p>
-                </div>
-      
-                <div className="m-testi__track" id="mTestiTrack">
-                  <article className="m-testi__card">
-                    <div className="youtube-placeholder m-testi__media" data-video="bunny:786982/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4" data-thumb="/img/testi-01-thumb.png">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="m-testi__body">
-                      <h3 className="m-testi__name">Student Name</h3>
-                      <p className="m-testi__role">Course / City</p>
-                      <p className="m-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="m-testi__card">
-                    <div className="youtube-placeholder m-testi__media" data-video="bunny:786982/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4" data-thumb="/img/testi-02-thumb.png">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="m-testi__body">
-                      <h3 className="m-testi__name">Student Name</h3>
-                      <p className="m-testi__role">Course / City</p>
-                      <p className="m-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="m-testi__card">
-                    <div className="youtube-placeholder m-testi__media" data-video="bunny:786982/5f8ee15c-968a-47b0-8a00-991b0216deb2" data-thumb="/img/testi-03-thumb.jpg">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="m-testi__body">
-                      <h3 className="m-testi__name">Student Name</h3>
-                      <p className="m-testi__role">Course / City</p>
-                      <p className="m-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="m-testi__card">
-                    <div className="youtube-placeholder m-testi__media m-testi__media--idle" data-video="" data-static="true">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="m-testi__body">
-                      <h3 className="m-testi__name">Student Name</h3>
-                      <p className="m-testi__role">Course / City</p>
-                      <p className="m-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="m-testi__card">
-                    <div className="youtube-placeholder m-testi__media m-testi__media--idle" data-video="" data-static="true">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="m-testi__body">
-                      <h3 className="m-testi__name">Student Name</h3>
-                      <p className="m-testi__role">Course / City</p>
-                      <p className="m-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-                </div>
-      
-                <div className="m-testi__dots" id="mTestiDots" aria-hidden="true"></div>
-              </section>
+              <TestimonialVideoSection layout="mobile" />
       
               <section className="m-fit" aria-labelledby="m-fit-title">
                 <div className="m-fit__inner">
@@ -420,12 +356,13 @@ export default function HomeLegacyMarkup() {
       
             <footer className="m-footer">
               <div className="m-footer__brand">
-                <a href="/">
-                   <img src="/img/logo white.png" alt="Mentrodex logo" />
-                </a>
-                <a href="/" className="footerLogoAnchro">
-                  <span className="m-footer__name">Mentrodex</span>
-                </a>
+                <img
+                  src="/img/logo white.png"
+                  alt="Mentrodex logo"
+                  width={28}
+                  height={28}
+                />
+                <span className="m-footer__name">Mentrodex</span>
               </div>
               <p className="m-footer__legal">© 2026 Mentrodex. All rights reserved.</p>
             </footer>
@@ -472,81 +409,7 @@ export default function HomeLegacyMarkup() {
             </section>
           </div>
       <main className="d-main">
-            <section className="d-testi" aria-labelledby="d-testi-title">
-              <div className="d-testi__inner">
-                <header className="d-testi__head">
-                  <div>
-                    <span className="d-testi__eyebrow">Social proof</span>
-                    <h2 id="d-testi-title" className="d-testi__title">What Others Say</h2>
-                    <p className="d-testi__sub">Hear from students &amp; professionals.</p>
-                  </div>
-                  <div className="d-testi__nav">
-                    <button type="button" className="d-testi__arrow" id="dTestiPrev" aria-label="Previous stories">←</button>
-                    <button type="button" className="d-testi__arrow" id="dTestiNext" aria-label="Next stories">→</button>
-                  </div>
-                </header>
-      
-                
-                <div className="d-testi__track" id="dTestiTrack">
-                  <article className="d-testi__card">
-                    <div className="youtube-placeholder d-testi__media" data-video="bunny:786982/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4" data-thumb="/img/testi-01-thumb.png">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="d-testi__body">
-                      <h3 className="d-testi__name">Student Name</h3>
-                      <p className="d-testi__role">Course / City</p>
-                      <p className="d-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="d-testi__card">
-                    <div className="youtube-placeholder d-testi__media" data-video="bunny:786982/5f8ee15c-968a-47b0-8a00-991b0216deb2" data-thumb="/img/testi-03-thumb.jpg">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="d-testi__body">
-                      <h3 className="d-testi__name">Student Name</h3>
-                      <p className="d-testi__role">Course / City</p>
-                      <p className="d-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="d-testi__card">
-                    <div className="youtube-placeholder d-testi__media" data-video="">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="d-testi__body">
-                      <h3 className="d-testi__name">Student Name</h3>
-                      <p className="d-testi__role">Course / City</p>
-                      <p className="d-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="d-testi__card">
-                    <div className="youtube-placeholder d-testi__media" data-video="">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="d-testi__body">
-                      <h3 className="d-testi__name">Student Name</h3>
-                      <p className="d-testi__role">Course / City</p>
-                      <p className="d-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-      
-                  <article className="d-testi__card">
-                    <div className="youtube-placeholder d-testi__media" data-video="">
-                      <span className="testi__play" aria-hidden="true"><span className="lec__thumb-play">▶</span></span>
-                    </div>
-                    <div className="d-testi__body">
-                      <h3 className="d-testi__name">Student Name</h3>
-                      <p className="d-testi__role">Course / City</p>
-                      <p className="d-testi__quote">“Add a short student review here.”</p>
-                    </div>
-                  </article>
-                </div>
-      
-                <div className="d-testi__dots" id="dTestiDots" aria-hidden="true"></div>
-              </div>
-            </section>
+            <TestimonialVideoSection layout="desktop" />
       
             <section className="d-fit" aria-labelledby="d-fit-title">
               <div className="d-fit__inner">

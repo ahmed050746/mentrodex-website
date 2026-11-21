@@ -9,6 +9,7 @@ const homeStyles: Stylesheet[] = [
   { href: "/styles/style.css" },
   { href: "/styles/mobile-bundle.css", media: "(max-width: 899px)" },
   { href: "/styles/desktop-hero-fallback.css", media: "(min-width: 900px)" },
+  { href: "/styles/testimonial-player.css" },
 ];
 
 const pageStyles: Record<string, readonly Stylesheet[]> = {
