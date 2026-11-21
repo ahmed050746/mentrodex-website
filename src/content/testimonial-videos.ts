@@ -25,6 +25,8 @@ export const TESTIMONIAL_VIDEOS: TestimonialVideoItem[] = [
     id: "testi-01",
     title: "Student story 01",
     bunny: "bunny:786982/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4",
+    thumbnail:
+      "https://vz-40eaeb89-41e.b-cdn.net/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4/thumbnail_5439cae9.jpg",
     name: "Student Name",
     role: "Course / City",
     quote: "Add a short student review here.",
@@ -33,6 +35,8 @@ export const TESTIMONIAL_VIDEOS: TestimonialVideoItem[] = [
     id: "testi-02",
     title: "Student story 02",
     bunny: "bunny:786982/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4",
+    thumbnail:
+      "https://vz-40eaeb89-41e.b-cdn.net/3be219b1-35a9-4ddd-9d14-5fb8aea8dba4/thumbnail_5439cae9.jpg",
     name: "Student Name",
     role: "Course / City",
     quote: "Add a short student review here.",
@@ -41,6 +45,8 @@ export const TESTIMONIAL_VIDEOS: TestimonialVideoItem[] = [
     id: "testi-03",
     title: "Student story 03",
     bunny: "bunny:786982/5f8ee15c-968a-47b0-8a00-991b0216deb2",
+    thumbnail:
+      "https://vz-40eaeb89-41e.b-cdn.net/5f8ee15c-968a-47b0-8a00-991b0216deb2/thumbnail_d554c419.jpg",
     name: "Student Name",
     role: "Course / City",
     quote: "Add a short student review here.",

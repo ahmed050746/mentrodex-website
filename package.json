@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "optimize:hero-desktop": "node scripts/optimize-hero-desktop.mjs"
+    "optimize:hero-desktop": "node scripts/optimize-hero-desktop.mjs",
+    "sync:bunny-thumbs": "node scripts/sync-bunny-thumbnails.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

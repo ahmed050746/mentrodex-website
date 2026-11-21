@@ -6098,6 +6098,14 @@ button[type="submit"]:disabled {
   padding-top: 0;
 }
 
+/* Break out of .m-shell column so hero canvas matches full-bleed fixed header */
+#layout-mobile .m-stage {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 #layout-mobile .m-header,
 html.page-v2 #layout-mobile .m-header {
   position: fixed;

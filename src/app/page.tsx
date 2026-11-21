@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { BunnyPrefetchProvider } from "@/components/BunnyPrefetchProvider";
 import { HomeHeaderScroll } from "@/components/home/HomeHeaderScroll";
 import HomeLegacyMarkup from "@/components/home/HomeLegacyMarkup";
 import { LegacyStyles } from "@/components/LegacyStyles";
+import { MobileDeferredStyles } from "@/components/MobileDeferredStyles";
 
 export const metadata: Metadata = {
   title: "E-Commerce Mentorship Pakistan | Shopify & Dropshipping Expert",
@@ -16,9 +16,10 @@ export default function HomePage() {
       <link
         rel="preload"
         as="image"
-        href="/img/hero-mentor.webp"
+        href="/img/hero-mentor.webp?v=20261119perfB"
         type="image/webp"
         media="(max-width: 899px)"
+        fetchPriority="high"
       />
       <link
         rel="preload"
@@ -28,10 +29,9 @@ export default function HomePage() {
         media="(min-width: 900px)"
       />
       <LegacyStyles page="home" />
-      <BunnyPrefetchProvider>
-        <HomeHeaderScroll />
-        <HomeLegacyMarkup />
-      </BunnyPrefetchProvider>
+      <MobileDeferredStyles />
+      <HomeHeaderScroll />
+      <HomeLegacyMarkup />
     </>
   );
 }
