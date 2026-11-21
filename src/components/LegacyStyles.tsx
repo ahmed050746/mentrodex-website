@@ -3,15 +3,15 @@ type Stylesheet = {
   media?: string;
 };
 
-/** Mobile: critical CSS sync; heavy sheets deferred via MobileDeferredStyles on home. */
+/** Mobile: small critical sheet first, then full CSS in document order (blocking = stable paint). */
 const homeStyles: Stylesheet[] = [
   { href: "/styles/design-tokens.css" },
   { href: "/styles/design-system.css" },
   { href: "/styles/mobile-critical.css", media: "(max-width: 899px)" },
-  { href: "/styles/style.css", media: "(min-width: 900px)" },
-  { href: "/styles/mobile-bundle.css", media: "(min-width: 900px)" },
+  { href: "/styles/style.css" },
+  { href: "/styles/mobile-bundle.css", media: "(max-width: 899px)" },
   { href: "/styles/desktop-hero-fallback.css", media: "(min-width: 900px)" },
-  { href: "/styles/testimonial-player.css", media: "(min-width: 900px)" },
+  { href: "/styles/testimonial-player.css" },
 ];
 
 const pageStyles: Record<string, readonly Stylesheet[]> = {

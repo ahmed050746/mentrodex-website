@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { HomeHeaderScroll } from "@/components/home/HomeHeaderScroll";
 import HomeLegacyMarkup from "@/components/home/HomeLegacyMarkup";
 import { LegacyStyles } from "@/components/LegacyStyles";
-import { MobileDeferredStyles } from "@/components/MobileDeferredStyles";
-
 export const metadata: Metadata = {
   title: "E-Commerce Mentorship Pakistan | Shopify & Dropshipping Expert",
   description:
@@ -29,7 +27,6 @@ export default function HomePage() {
         media="(min-width: 900px)"
       />
       <LegacyStyles page="home" />
-      <MobileDeferredStyles />
       <HomeHeaderScroll />
       <HomeLegacyMarkup />
     </>
