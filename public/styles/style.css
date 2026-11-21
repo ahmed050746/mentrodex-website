@@ -5397,6 +5397,7 @@ button[type="submit"]:disabled {
 }
 
 .lec .lec__media {
+  position: relative;
   max-width: none;
   margin: 0;
   border-radius: 16px;

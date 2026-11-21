@@ -23,10 +23,14 @@ export function parseBunnyRef(
   return null;
 }
 
-/** Lazy-friendly embed URL — no stream until iframe is mounted (use `preload=false`). */
+/** Lazy-friendly embed URL — card previews can set `preload: true` for Bunny’s poster frame. */
 export function bunnyEmbedUrl(
   input: string,
-  { autoplay = false }: { autoplay?: boolean } = {},
+  {
+    autoplay = false,
+    preload = false,
+    muted = false,
+  }: { autoplay?: boolean; preload?: boolean; muted?: boolean } = {},
 ): string | null {
   const parsed = parseBunnyRef(input);
   if (!parsed) return null;
@@ -34,17 +38,32 @@ export function bunnyEmbedUrl(
   const params = new URLSearchParams({
     autoplay: autoplay ? "true" : "false",
     loop: "false",
-    muted: "false",
-    preload: "false",
+    muted: muted ? "true" : "false",
+    preload: preload ? "true" : "false",
     responsive: "true",
   });
 
   return `https://player.mediadelivery.net/embed/${parsed.libraryId}/${parsed.videoId}?${params.toString()}`;
 }
 
-/** Lightweight preview image (main player poster only — not used in the list). */
-export function bunnyPosterUrl(input: string): string | null {
-  const parsed = parseBunnyRef(input);
-  if (!parsed) return null;
-  return `https://thumbnail.mediadelivery.net/${parsed.libraryId}/${parsed.videoId}/thumbnail.jpg`;
+/**
+ * Real poster from Bunny CDN (public oEmbed — no API key).
+ * Prefer this over the old mediadelivery thumbnail host (invalid DNS).
+ */
+export async function fetchBunnyOEmbedThumbnail(
+  input: string,
+): Promise<string | null> {
+  const embed = bunnyEmbedUrl(input, { autoplay: false, preload: false });
+  if (!embed) return null;
+
+  try {
+    const res = await fetch(
+      `https://video.bunnycdn.com/oembed?url=${encodeURIComponent(embed)}`,
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as { thumbnail_url?: string };
+    return data.thumbnail_url?.trim() || null;
+  } catch {
+    return null;
+  }
 }

@@ -13,6 +13,8 @@ export type TestimonialVideoItem = {
   /** Display title under the main player */
   title: string;
   bunny: string;
+  /** Optional static poster; falls back to Bunny thumbnail API */
+  thumbnail?: string;
   name: string;
   role: string;
   quote: string;

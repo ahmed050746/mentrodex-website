@@ -1,5 +1,6 @@
 /* Auto-generated from shopify-course/index.html — edit via scripts/convert-home-body.mjs */
 import { DesktopHeroFallbackPhoto } from "@/components/home/DesktopHeroFallbackPhoto";
+import { LectureVideoSection } from "@/components/home/LectureVideoSection";
 import { TestimonialVideoSection } from "@/components/home/TestimonialVideoSection";
 
 export default function HomeLegacyMarkup() {
@@ -296,31 +297,7 @@ export default function HomeLegacyMarkup() {
                 </div>
               </section>
       
-              <section className="lec" aria-labelledby="m-lec-title">
-                <div className="lec__inner">
-                  <header className="lec__head">
-                    <span className="lec__eyebrow">Sample lectures</span>
-                    <h2 id="m-lec-title" className="lec__title">Preview the <span className="lec__title-accent">Course Lessons</span></h2>
-                    <p className="lec__sub">Short sample lessons. See our teaching style and key concepts.</p>
-                  </header>
-      
-                  <div className="lec__layout">
-                    <div className="lec__player">
-                      <div className="youtube-placeholder lec__media" data-video="">
-                        <div className="play-button" aria-hidden="true">▶</div>
-                      </div>
-                      <p className="lec__now"><span className="lec__now-label">Now playing</span> <span className="lec__now-title">Lecture 01 · How You will make Money</span></p>
-                    </div>
-      
-                    <ol className="lec__list">
-                      <li><button type="button" className="lec__btn is-active" aria-pressed="true" data-video="bunny:786982/2b51c5e2-b7b1-4a26-ad4b-7f9aac767c18" data-thumb="/img/lecture-01-thumb.png" data-title="Lecture 01 · How You will make Money"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 01</span><span className="lec__name">How You will make Money</span></span></button></li>
-                      <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/465064dc-438f-40f7-a7f4-b8f11ed68973" data-thumb="/img/lecture-02-thumb.png" data-title="Lecture 02 · Discord Marketing Full Introduction"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 02</span><span className="lec__name">Discord Marketing Full Introduction</span></span></button></li>
-                      <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/14472577-1d3f-4e4e-a400-a6f6f2e946cc" data-thumb="/img/lecture-03-thumb.png" data-title="Lecture 03 · WhatsApp Group Marketing Strategy"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 03</span><span className="lec__name">WhatsApp Group Marketing Strategy</span></span></button></li>
-                      <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/464f54e8-5302-4512-9dea-0fbc9e76dc94" data-thumb="/img/lecture-04-thumb.png" data-title="Lecture 04 · Find Winning Product Under 5 Minutes"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 04</span><span className="lec__name">Find Winning Product Under 5 Minutes</span></span></button></li>
-                    </ol>
-                  </div>
-                </div>
-              </section>
+              <LectureVideoSection titleId="m-lec-title" />
       
               <section className="price" aria-labelledby="m-price-title">
                 <div className="price__inner">
@@ -645,31 +622,7 @@ export default function HomeLegacyMarkup() {
               </div>
             </section>
       
-            <section className="lec" aria-labelledby="d-lec-title">
-              <div className="lec__inner">
-                <header className="lec__head">
-                  <span className="lec__eyebrow">Sample lectures</span>
-                  <h2 id="d-lec-title" className="lec__title">Preview the <span className="lec__title-accent">Course Lessons</span></h2>
-                  <p className="lec__sub">Short sample lessons. See our teaching style and key concepts.</p>
-                </header>
-      
-                <div className="lec__layout">
-                  <div className="lec__player">
-                    <div className="youtube-placeholder lec__media" data-video="">
-                      <div className="play-button" aria-hidden="true">▶</div>
-                    </div>
-                    <p className="lec__now"><span className="lec__now-label">Now playing</span> <span className="lec__now-title">Lecture 01 · How You will make Money</span></p>
-                  </div>
-      
-                  <ol className="lec__list">
-                    <li><button type="button" className="lec__btn is-active" aria-pressed="true" data-video="bunny:786982/2b51c5e2-b7b1-4a26-ad4b-7f9aac767c18" data-thumb="/img/lecture-01-thumb.png" data-title="Lecture 01 · How You will make Money"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 01</span><span className="lec__name">How You will make Money</span></span></button></li>
-                    <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/465064dc-438f-40f7-a7f4-b8f11ed68973" data-thumb="/img/lecture-02-thumb.png" data-title="Lecture 02 · Discord Marketing Full Introduction"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 02</span><span className="lec__name">Discord Marketing Full Introduction</span></span></button></li>
-                    <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/14472577-1d3f-4e4e-a400-a6f6f2e946cc" data-thumb="/img/lecture-03-thumb.png" data-title="Lecture 03 · WhatsApp Group Marketing Strategy"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 03</span><span className="lec__name">WhatsApp Group Marketing Strategy</span></span></button></li>
-                    <li><button type="button" className="lec__btn" aria-pressed="false" data-video="bunny:786982/464f54e8-5302-4512-9dea-0fbc9e76dc94" data-thumb="/img/lecture-04-thumb.png" data-title="Lecture 04 · Find Winning Product Under 5 Minutes"><span className="lec__thumb" aria-hidden="true"><span className="lec__thumb-play">▶</span></span><span className="lec__meta"><span className="lec__num">Lecture 04</span><span className="lec__name">Find Winning Product Under 5 Minutes</span></span></button></li>
-                  </ol>
-                </div>
-              </div>
-            </section>
+            <LectureVideoSection titleId="d-lec-title" />
       
             <section className="price" aria-labelledby="d-price-title">
               <div className="price__inner">
