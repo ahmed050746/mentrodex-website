@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 
 type LayoutVariant = "mobile" | "desktop";
 
@@ -12,26 +12,53 @@ function layoutMatchesViewport(layout: LayoutVariant): boolean {
     : layout === "mobile";
 }
 
+function subscribe(onStoreChange: () => void) {
+  const mq = window.matchMedia(LAYOUT_MQ);
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getClientSnapshot(layout: LayoutVariant) {
+  return layoutMatchesViewport(layout);
+}
+
+/** Mobile islands SSR in #layout-mobile (hidden on desktop via CSS). Desktop waits for viewport. */
+function getServerSnapshot(layout: LayoutVariant) {
+  return layout === "mobile";
+}
+
 /**
- * Mounts client UI only for the active layout after hydration (avoids SSR/client mismatch).
+ * Mounts client UI for the active layout. Mobile content is included in SSR for stable CLS.
  */
 export function LayoutGatedClient({
   layout,
   children,
+  reserveMinHeight,
 }: {
   layout: LayoutVariant;
   children: ReactNode;
+  /** Reserved space when desktop islands are not yet mounted (SSR / narrow viewport). */
+  reserveMinHeight?: number;
 }) {
-  const [show, setShow] = useState(false);
+  const show = useSyncExternalStore(
+    subscribe,
+    () => getClientSnapshot(layout),
+    () => getServerSnapshot(layout),
+  );
 
-  useEffect(() => {
-    const mq = window.matchMedia(LAYOUT_MQ);
-    const sync = () => setShow(layoutMatchesViewport(layout));
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, [layout]);
+  if (show) {
+    return children;
+  }
 
-  if (!show) return null;
-  return children;
+  if (layout === "desktop" && reserveMinHeight != null && reserveMinHeight > 0) {
+    return (
+      <div
+        className="layout-gate-shell"
+        aria-hidden="true"
+        style={{ minHeight: reserveMinHeight }}
+      />
+    );
+  }
+
+  return null;
 }

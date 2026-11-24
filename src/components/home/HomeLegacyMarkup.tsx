@@ -1,7 +1,6 @@
 /* Auto-generated from shopify-course/index.html — edit via scripts/convert-home-body.mjs */
 import { DesktopHeroFallbackPhoto } from "@/components/home/DesktopHeroFallbackPhoto";
 import { LayoutGatedClient } from "@/components/LayoutGatedClient";
-import { ViewportMount } from "@/components/ViewportMount";
 import { LectureVideoSection } from "@/components/home/LectureVideoSection";
 import { TestimonialVideoSection } from "@/components/home/TestimonialVideoSection";
 
@@ -22,7 +21,7 @@ export default function HomeLegacyMarkup() {
                   <span className="m-logo__text">Mentrodex</span>
                 </a>
                 <div className="m-header__actions">
-                  <span className="m-header__mentor">MD Ahmed</span>
+                  <span className="m-header__mentor">MD Ahmed Ali</span>
                   <a href="/pay" className="nav-enroll">
                     <span className="nav-enroll__label">Enroll Now</span>
                   </a>
@@ -36,11 +35,12 @@ export default function HomeLegacyMarkup() {
                   <img
                     className="m-hero__photo"
                     src="/img/hero-mentor.webp?v=20261119perfB"
-                    alt=""
+                    alt="MD Ahmed Ali"
                     width={390}
                     height={260}
-                    decoding="async"
+                    decoding="sync"
                     fetchPriority="high"
+                    style={{ aspectRatio: "390 / 260" }}
                   />
                   <span className="m-hero__shade"></span>
                 </div>
@@ -63,9 +63,7 @@ export default function HomeLegacyMarkup() {
             <main className="m-main">
               
               <LayoutGatedClient layout="mobile">
-                <ViewportMount minHeight={520}>
-                  <TestimonialVideoSection layout="mobile" />
-                </ViewportMount>
+                <TestimonialVideoSection layout="mobile" />
               </LayoutGatedClient>
       
               <section className="m-fit" aria-labelledby="m-fit-title">
@@ -312,9 +310,7 @@ export default function HomeLegacyMarkup() {
               </section>
       
               <LayoutGatedClient layout="mobile">
-                <ViewportMount minHeight={480}>
-                  <LectureVideoSection titleId="m-lec-title" />
-                </ViewportMount>
+                <LectureVideoSection titleId="m-lec-title" />
               </LayoutGatedClient>
       
               <section className="price" aria-labelledby="m-price-title">
@@ -378,6 +374,7 @@ export default function HomeLegacyMarkup() {
               </div>
             </header>
             <section className="d-hero-fallback" aria-labelledby="d-hero-fallback-title">
+              <span className="m-hero__grid" aria-hidden="true" />
               <div className="d-hero-fallback__media" aria-hidden="true">
                 <DesktopHeroFallbackPhoto />
               </div>
@@ -404,7 +401,7 @@ export default function HomeLegacyMarkup() {
             </section>
           </div>
       <main className="d-main">
-            <LayoutGatedClient layout="desktop">
+            <LayoutGatedClient layout="desktop" reserveMinHeight={520}>
               <TestimonialVideoSection layout="desktop" />
             </LayoutGatedClient>
       
@@ -642,7 +639,7 @@ export default function HomeLegacyMarkup() {
               </div>
             </section>
       
-            <LayoutGatedClient layout="desktop">
+            <LayoutGatedClient layout="desktop" reserveMinHeight={480}>
               <LectureVideoSection titleId="d-lec-title" />
             </LayoutGatedClient>
       

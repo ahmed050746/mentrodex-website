@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import PayPageClient from "@/components/pay/PayPageClient";
 import { LegacyStyles } from "@/components/LegacyStyles";
+import { OWNER_NAME, SITE_NAME } from "@/lib/site-seo";
 
 export const metadata: Metadata = {
   title: "Enroll Now | Pay Rs. 4,500",
-  description:
-    "Secure your spot in the 1-on-1 e-commerce mentorship. Pay via Bank Transfer or EasyPaisa and confirm your enrollment.",
+  description: `Enroll in ${OWNER_NAME}'s ${SITE_NAME} mentorship. Pay via Bank Transfer or EasyPaisa and confirm your spot.`,
 };
 
 export default function PayPage() {

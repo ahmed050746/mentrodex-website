@@ -32,7 +32,14 @@ export function MetaAnalytics() {
     lastPageViewUrlModule = eventSourceUrl;
 
     const eventId = createMetaEventId();
-    void trackMetaEvent("PageView", { eventId, eventSourceUrl });
+    const sendPageView = () => {
+      void trackMetaEvent("PageView", { eventId, eventSourceUrl });
+    };
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(sendPageView, { timeout: 3000 });
+    } else {
+      window.setTimeout(sendPageView, 1500);
+    }
   }, [pathname, searchParams]);
 
   useEffect(() => {

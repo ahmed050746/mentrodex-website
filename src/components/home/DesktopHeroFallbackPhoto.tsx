@@ -37,7 +37,7 @@ export function DesktopHeroFallbackPhoto() {
   return (
     <Image
       src="/img/hero-mentor-desktop.webp"
-      alt=""
+      alt="MD Ahmed Ali"
       width={480}
       height={640}
       priority

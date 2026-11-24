@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
-  /** Placeholder min-height to avoid layout shift */
+  /** Placeholder min-height to avoid layout shift before mount */
   minHeight?: number;
   rootMargin?: string;
 };
@@ -12,7 +12,7 @@ type Props = {
 /** Mount children when near viewport — saves JS and network on initial mobile load. */
 export function ViewportMount({
   children,
-  minHeight = 420,
+  minHeight = 0,
   rootMargin = "240px 0px",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,7 +42,10 @@ export function ViewportMount({
   }, [rootMargin]);
 
   return (
-    <div ref={ref} style={!show ? { minHeight } : undefined}>
+    <div
+      ref={ref}
+      style={!show && minHeight > 0 ? { minHeight } : undefined}
+    >
       {show ? children : null}
     </div>
   );
