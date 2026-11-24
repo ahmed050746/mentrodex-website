@@ -21,7 +21,7 @@ export default function HomeLegacyMarkup() {
                   <span className="m-logo__text">Mentrodex</span>
                 </a>
                 <div className="m-header__actions">
-                  <span className="m-header__mentor">MD Ahmed Ali</span>
+                  <span className="m-header__mentor">MD Ahmed</span>
                   <a href="/pay" className="nav-enroll">
                     <span className="nav-enroll__label">Enroll Now</span>
                   </a>

@@ -127,11 +127,6 @@ export function TestimonialVideoSection({ layout }: Props) {
                 )}
               </div>
 
-              <p className="testi-vswitch__now">
-                <span className="testi-vswitch__now-label">Now playing</span>
-                <span className="testi-vswitch__now-title">{active.title}</span>
-              </p>
-
               <div className={`${prefix}-testi__body testi-vswitch__body`}>
                 <h3 className={`${prefix}-testi__name`}>{active.name}</h3>
                 <p className={`${prefix}-testi__role`}>{active.role}</p>
@@ -157,6 +152,7 @@ export function TestimonialVideoSection({ layout }: Props) {
                     type="button"
                     className={`testi-vswitch__pick${selected ? " is-active" : ""}${showMedia ? " testi-vswitch__pick--has-thumb" : ""}`}
                     aria-pressed={selected}
+                    aria-label={!isDesktop ? item.title : undefined}
                     data-video={item.bunny}
                     onClick={() => selectVideo(index)}
                   >
@@ -188,14 +184,16 @@ export function TestimonialVideoSection({ layout }: Props) {
                         </span>
                       </span>
                     ) : null}
-                    <span className="testi-vswitch__pick-copy">
-                      <span className="testi-vswitch__pick-title">
-                        {item.title}
+                    {isDesktop ? (
+                      <span className="testi-vswitch__pick-copy">
+                        <span className="testi-vswitch__pick-title">
+                          {item.title}
+                        </span>
+                        <span className="testi-vswitch__pick-name">
+                          {item.name}
+                        </span>
                       </span>
-                      <span className="testi-vswitch__pick-name">
-                        {item.name}
-                      </span>
-                    </span>
+                    ) : null}
                   </button>
                 </li>
               );

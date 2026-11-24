@@ -9,6 +9,11 @@
   padding-bottom: 24px;
 }
 
+#layout-mobile .testi-vswitch__now,
+#layout-mobile .testi-vswitch__pick-copy {
+  display: none !important;
+}
+
 .testi-vswitch__inline-poster {
   position: absolute;
   inset: 0;
@@ -196,7 +201,7 @@
 
 #layout-mobile .testi-vswitch__pick--has-thumb {
   padding: 6px;
-  gap: 6px;
+  gap: 0;
   min-width: 0;
 }
 
