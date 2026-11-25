@@ -131,6 +131,10 @@ export async function POST(request: Request) {
   const event_name =
     String(form.get("event_name") ?? "").trim() ||
     "payment_screenshot_submitted";
+  const email = String(form.get("email") ?? "").trim() || null;
+  const fbp = String(form.get("fbp") ?? "").trim() || null;
+  const fbc = String(form.get("fbc") ?? "").trim() || null;
+  const user_agent = String(form.get("user_agent") ?? "").trim() || null;
 
   const order_id = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   const ext = extFromMime(imageMime);
@@ -178,6 +182,10 @@ export async function POST(request: Request) {
       phone_number,
       event_name,
       image_upload,
+      email,
+      fbp,
+      fbc,
+      user_agent,
     })
     .select("id, order_id, image_upload")
     .single();

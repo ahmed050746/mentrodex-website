@@ -22,6 +22,14 @@ const PAY_STEPS = [
   { id: 3 as const, label: "Upload", short: "Upload" },
 ] as const;
 
+function readBrowserCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp(`(?:^|;\\s*)${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}=([^;]*)`),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 const PHONE_COUNTRIES = [
   { value: "PK", label: "Pakistan" },
   { value: "SA", label: "Saudi Arabia" },
@@ -181,6 +189,11 @@ export default function PayPageClient() {
       formData.append("currency", COURSE_CURRENCY);
       formData.append("value", String(COURSE_PRICE_PKR));
       formData.append("event_name", "payment_screenshot_submitted");
+      const fbp = readBrowserCookie("_fbp");
+      const fbc = readBrowserCookie("_fbc");
+      if (fbp) formData.append("fbp", fbp);
+      if (fbc) formData.append("fbc", fbc);
+      formData.append("user_agent", navigator.userAgent);
       formData.append("screenshot", screenshotFile);
 
       const res = await fetch("/api/enroll-stub", {
