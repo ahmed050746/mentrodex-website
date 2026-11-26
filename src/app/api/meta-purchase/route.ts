@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { COURSE_CURRENCY, COURSE_PRICE_PKR } from "@/lib/coursePrice";
+import { resolveMetaTestEventCode } from "@/lib/metaTracking";
 
 const GRAPH_VERSION = "v21.0";
 
@@ -152,13 +153,21 @@ export async function POST(request: Request) {
     },
   };
 
+  const graphBody: Record<string, unknown> = {
+    data: [eventPayload],
+  };
+  const testEventCode = resolveMetaTestEventCode();
+  if (testEventCode) {
+    graphBody.test_event_code = testEventCode;
+  }
+
   const url = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${encodeURIComponent(accessToken)}`;
 
   try {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [eventPayload] }),
+      body: JSON.stringify(graphBody),
     });
 
     const json = (await res.json().catch(() => ({}))) as {

@@ -47,6 +47,38 @@ export function createMetaEventId(): string {
 /** Meta standard event name — exact PascalCase for deduplication with Events Manager. */
 export const META_EVENT_INITIATE_CHECKOUT = "InitiateCheckout" as const;
 
+const PAGE_VIEW_FBQ_POLL_MS = 150;
+const PAGE_VIEW_FBQ_MAX_WAIT_MS = 3000;
+
+function fireBrowserMetaTrack(
+  eventName: string,
+  customData: Record<string, unknown>,
+  eventId: string,
+): void {
+  if (typeof window === "undefined") return;
+
+  const fire = () => {
+    window.fbq?.("track", eventName, customData, { eventID: eventId });
+  };
+
+  if (typeof window.fbq === "function") {
+    fire();
+    return;
+  }
+
+  if (eventName !== "PageView") return;
+
+  const started = Date.now();
+  const timer = window.setInterval(() => {
+    if (typeof window.fbq === "function") {
+      window.clearInterval(timer);
+      fire();
+    } else if (Date.now() - started >= PAGE_VIEW_FBQ_MAX_WAIT_MS) {
+      window.clearInterval(timer);
+    }
+  }, PAGE_VIEW_FBQ_POLL_MS);
+}
+
 export function trackMetaEvent(
   eventName: string,
   options: MetaTrackOptions = {},
@@ -70,9 +102,7 @@ export function trackMetaEvent(
     payload.test_event_code = testEventCode;
   }
 
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", eventName, customData, { eventID: eventId });
-  }
+  fireBrowserMetaTrack(eventName, customData, eventId);
 
   void fetch("/api/meta", {
     method: "POST",
