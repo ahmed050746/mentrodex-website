@@ -10,3 +10,5 @@ export * from "./adminGate";
 export * from "./adminSerialize";
 export * from "./bunnyInput";
 export * from "./studentFields";
+export * from "./rateLimit";
+export * from "./courseSnapshot";

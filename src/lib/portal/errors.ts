@@ -1,4 +1,18 @@
 import { NextResponse } from "next/server";
+import { SupabaseConfigError } from "@/lib/supabase/serviceRole";
+
+export function portalJsonFromCaught(
+  err: unknown,
+  fallback: string,
+): NextResponse {
+  if (err instanceof SupabaseConfigError) {
+    return portalJsonError(`${err.message}. Restart npm run dev after saving.`, 503);
+  }
+  if (err instanceof Error && err.message.toLowerCase().includes("missing")) {
+    return portalJsonError(`${err.message}. Restart npm run dev after saving.`, 503);
+  }
+  return portalJsonError(fallback, 500);
+}
 
 export function portalJsonError(
   message: string,

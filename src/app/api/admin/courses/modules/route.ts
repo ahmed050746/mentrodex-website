@@ -5,7 +5,11 @@ import {
   toAdminLesson,
   toAdminModule,
 } from "@/lib/portal/adminSerialize";
-import { portalJsonError, portalJsonOk } from "@/lib/portal/errors";
+import {
+  portalJsonError,
+  portalJsonFromCaught,
+  portalJsonOk,
+} from "@/lib/portal/errors";
 import { createServiceRoleClient } from "@/lib/supabase/serviceRole";
 import { validateTitle } from "@/lib/portal/validation";
 
@@ -59,8 +63,8 @@ export async function GET() {
     });
 
     return portalJsonOk({ modules: payload });
-  } catch {
-    return portalJsonError("Could not load modules.", 500);
+  } catch (e) {
+    return portalJsonFromCaught(e, "Could not load modules.");
   }
 }
 
@@ -117,7 +121,7 @@ export async function POST(request: Request) {
 
     const mod = toAdminModule(data as Record<string, unknown>);
     return portalJsonOk({ module: moduleWithLessons(mod, []) }, 201);
-  } catch {
-    return portalJsonError("Could not create module.", 500);
+  } catch (e) {
+    return portalJsonFromCaught(e, "Could not create module.");
   }
 }

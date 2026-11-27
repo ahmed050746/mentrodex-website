@@ -53,14 +53,18 @@ export function AdminCoursesClient() {
       };
       if (!res.ok || !json.ok) {
         setModulesError(json.error ?? "Could not load curriculum.");
+        // Past auth gate — still signed in even if Supabase / DB is misconfigured.
+        setAuthed(true);
         return;
       }
       setAuthed(true);
       setModules(json.modules ?? []);
     } catch {
       setModulesError("Network error while loading curriculum.");
+      setAuthed((a) => (a === null ? false : a));
     } finally {
       setModulesLoading(false);
+      setAuthed((a) => (a === null ? false : a));
     }
   }, []);
 
@@ -267,7 +271,8 @@ function LoginCard({
     <div className={styles.loginCard}>
       <h1>Admin sign in</h1>
       <p className={styles.muted}>
-        Same password as Orders admin. {authed === null ? "Checking session…" : ""}
+        Same password as Orders admin.
+        {authed === null ? " Checking session…" : ""}
       </p>
       {loginError ? <p className={styles.error}>{loginError}</p> : null}
       <form onSubmit={onLogin}>
@@ -285,7 +290,7 @@ function LoginCard({
         <button
           type="submit"
           className={styles.btnPrimary}
-          disabled={loginLoading || authed === null}
+          disabled={loginLoading}
         >
           {loginLoading ? "Signing in…" : "Sign in"}
         </button>

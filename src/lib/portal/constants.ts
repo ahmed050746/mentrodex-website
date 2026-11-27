@@ -1,4 +1,4 @@
-export const PORTAL_SESSION_COOKIE = "portal_session";
+export const PORTAL_SESSION_COOKIE = "mentrodex_portal_session";
 
 /** 30 days — student may stay signed in on multiple devices (no session lock). */
 export const PORTAL_SESSION_MAX_AGE_SEC = 60 * 60 * 24 * 30;

@@ -1,9 +1,28 @@
+const MEDIADELIVERY_HOST_RE = /(^|\.)mediadelivery\.net$/i;
+
+function isAllowedBunnyEmbedSource(trimmed: string): boolean {
+  if (!/^https?:\/\//i.test(trimmed) && !trimmed.startsWith("//")) {
+    return true;
+  }
+  try {
+    const url = new URL(trimmed.startsWith("//") ? `https:${trimmed}` : trimmed);
+    if (!MEDIADELIVERY_HOST_RE.test(url.hostname)) return false;
+    return /\/embed\/\d+\/[a-f0-9-]+/i.test(url.pathname);
+  } catch {
+    return false;
+  }
+}
+
 /** Parse Bunny refs: `bunny:786982/uuid`, `786982/uuid`, or mediadelivery embed URL */
 export function parseBunnyRef(
   input: string,
 ): { libraryId: string; videoId: string } | null {
   const trimmed = input.trim();
   if (!trimmed) return null;
+
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
+    if (!isAllowedBunnyEmbedSource(trimmed)) return null;
+  }
 
   const embedMatch = trimmed.match(/embed\/(\d+)\/([a-f0-9-]+)/i);
   if (embedMatch) {

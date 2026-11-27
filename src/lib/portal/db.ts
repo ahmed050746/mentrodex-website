@@ -175,4 +175,63 @@ export async function fetchLessonProgressForStudent(
   return ((data ?? []) as Record<string, unknown>[]).map(mapProgress);
 }
 
+export async function fetchPublishedLessonById(
+  lessonId: string,
+): Promise<CourseLesson | null> {
+  const supabase = createServiceRoleClient();
+  const { data: lesson, error: lesErr } = await supabase
+    .from("course_lessons")
+    .select("*")
+    .eq("id", lessonId)
+    .eq("is_published", true)
+    .maybeSingle();
+
+  if (lesErr) {
+    console.error("[portal/db] fetchPublishedLessonById", lesErr.message);
+    return null;
+  }
+  if (!lesson) return null;
+
+  const row = lesson as Record<string, unknown>;
+  const moduleId = String(row.module_id);
+  const { data: mod, error: modErr } = await supabase
+    .from("course_modules")
+    .select("id")
+    .eq("id", moduleId)
+    .eq("is_published", true)
+    .maybeSingle();
+
+  if (modErr) {
+    console.error("[portal/db] fetchPublishedLessonById module", modErr.message);
+    return null;
+  }
+  if (!mod) return null;
+
+  return mapLesson(row);
+}
+
+export async function upsertLessonCompleted(
+  studentId: string,
+  lessonId: string,
+): Promise<boolean> {
+  const supabase = createServiceRoleClient();
+  const now = new Date().toISOString();
+  const { error } = await supabase.from("lesson_progress").upsert(
+    {
+      student_id: studentId,
+      lesson_id: lessonId,
+      completed: true,
+      completed_at: now,
+      updated_at: now,
+    },
+    { onConflict: "student_id,lesson_id" },
+  );
+
+  if (error) {
+    console.error("[portal/db] upsertLessonCompleted", error.message);
+    return false;
+  }
+  return true;
+}
+
 export { mapStudent, mapModule, mapLesson, mapProgress };

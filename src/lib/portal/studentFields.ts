@@ -110,3 +110,5 @@ export function parseStudentPatchBody(
 
   return { data: patch };
 }
+
+export { normalizeStudentEmail as normalizeEmail, normalizeStudentPhone as normalizePhone };
