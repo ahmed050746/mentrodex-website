@@ -5,6 +5,7 @@ import {
 } from "@/lib/adminOrdersSession";
 import { formatCreatedAtPkt } from "@/lib/formatPktTime";
 import type { AdminOrderRow } from "@/lib/adminOrdersTypes";
+import { withSignedPaymentScreenshotUrls } from "@/lib/paymentScreenshots";
 import { createServiceRoleClient } from "@/lib/supabase/serviceRole";
 
 const ORDER_COLUMNS =
@@ -55,9 +56,10 @@ export async function GET() {
       );
     }
 
-    const orders = (data ?? []).map((row) =>
+    const mapped = (data ?? []).map((row) =>
       mapOrder(row as Record<string, unknown>),
     );
+    const orders = await withSignedPaymentScreenshotUrls(supabase, mapped);
     return NextResponse.json({ ok: true, orders });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Unknown error";
@@ -132,9 +134,12 @@ export async function PATCH(request: Request) {
       );
     }
 
+    const [order] = await withSignedPaymentScreenshotUrls(supabase, [
+      mapOrder(updated as Record<string, unknown>),
+    ]);
     return NextResponse.json({
       ok: true,
-      order: mapOrder(updated as Record<string, unknown>),
+      order,
     });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Unknown error";

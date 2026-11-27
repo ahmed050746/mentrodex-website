@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { AdminOrderRow } from "@/lib/adminOrdersTypes";
+import { adminOrderScreenshotSrc } from "@/lib/paymentScreenshots";
 import styles from "./admin-orders.module.css";
 
 function isPurchase(eventName: string): boolean {
@@ -348,11 +349,13 @@ export function AdminOrdersClient() {
                           <button
                             type="button"
                             className={styles.receiptBtn}
-                            onClick={() => setPreviewUrl(order.image_upload)}
+                            onClick={() =>
+                              setPreviewUrl(adminOrderScreenshotSrc(order.order_id))
+                            }
                             aria-label="View payment screenshot"
                           >
                             <img
-                              src={order.image_upload}
+                              src={adminOrderScreenshotSrc(order.order_id)}
                               alt="Payment screenshot"
                               className={styles.receiptImg}
                               loading="lazy"
@@ -418,12 +421,14 @@ export function AdminOrdersClient() {
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    setPreviewUrl(order.image_upload)
+                                    setPreviewUrl(
+                                      adminOrderScreenshotSrc(order.order_id),
+                                    )
                                   }
                                   aria-label="View receipt"
                                 >
                                   <img
-                                    src={order.image_upload}
+                                    src={adminOrderScreenshotSrc(order.order_id)}
                                     alt=""
                                     className={styles.approvedThumb}
                                   />

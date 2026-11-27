@@ -163,11 +163,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: publicData } = supabase.storage
-    .from(BUCKET)
-    .getPublicUrl(objectPath);
-
-  const image_upload = publicData.publicUrl;
+  const image_upload = objectPath;
 
   const { data, error } = await supabase
     .from("orders")
@@ -209,6 +205,5 @@ export async function POST(request: Request) {
     stored: true,
     id: data.id,
     order_id: data.order_id,
-    image_upload: data.image_upload,
   });
 }

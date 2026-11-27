@@ -1,4 +1,4 @@
--- Bucket for /pay step-3 screenshots (public URLs in image_upload until signed URLs are added).
+-- Bucket for /pay step-3 screenshots (private; admin uses signed URLs).
 -- Uploads: POST /api/enroll-stub with SUPABASE_SERVICE_ROLE_KEY (bypasses storage RLS).
 -- No anon/authenticated storage policies — avoids public listing and arbitrary uploads.
 
@@ -6,7 +6,7 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 values (
   'payment-screenshots',
   'payment-screenshots',
-  true,
+  false,
   5242880,
   array['image/jpeg', 'image/png', 'image/webp']
 )

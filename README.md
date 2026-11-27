@@ -35,12 +35,13 @@ Run SQL in Supabase SQL editor (in order):
 7. `supabase/migrations/009_lms_portal.sql` — LMS tables (Version-1 student portal)
 8. `supabase/migrations/010_lms_revoke_client_roles.sql` — revoke anon/authenticated on LMS tables
 9. `supabase/migrations/011_security_harden_orders_storage.sql` — drop anon SELECT on orders + payment storage policies (upgrade from old 006)
+10. `supabase/migrations/012_payment_screenshots_private_bucket.sql` — private bucket (admin signed URLs only)
 
 Do not run legacy `FIX_ORDERS_PERMISSIONS.sql` if it still included `allow_anon_select_orders`; use `011` instead.
 
 **`orders` columns:** `order_id`, `city`, `country`, `currency`, `value` (default `4500`), `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
 
-Payment screenshots are uploaded server-side to Storage bucket **`payment-screenshots`**; `image_upload` stores the public URL. If uploads fail with permission errors, add **`SUPABASE_SERVICE_ROLE_KEY`** to `.env.local` (Dashboard → Settings → API → service_role, server-only).
+Payment screenshots are uploaded server-side to Storage bucket **`payment-screenshots`** (private after migration `012`); `image_upload` stores the object path. Admin orders API returns short-lived signed URLs. If uploads fail with permission errors, add **`SUPABASE_SERVICE_ROLE_KEY`** to `.env.local` (Dashboard → Settings → API → service_role, server-only).
 
 ## Phase 1 scope (done)
 
