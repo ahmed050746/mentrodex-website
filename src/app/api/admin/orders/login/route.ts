@@ -1,3 +1,7 @@
+import {
+  checkAdminOrdersLoginRateLimit,
+  clientIpFromRequest,
+} from "@/lib/rateLimit";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
@@ -12,6 +16,17 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "Admin login is not configured." },
       { status: 503 },
+    );
+  }
+
+  const ip = clientIpFromRequest(request);
+  if (!checkAdminOrdersLoginRateLimit(ip)) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Too many login attempts. Try again in a minute.",
+      },
+      { status: 429 },
     );
   }
 

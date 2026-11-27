@@ -1,5 +1,6 @@
 import { COURSE_CURRENCY, COURSE_PRICE_PKR } from "@/lib/coursePrice";
 import { normalizePakPhone } from "@/lib/normalizePakPhone";
+import { checkEnrollStubRateLimit, clientIpFromRequest } from "@/lib/rateLimit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSupabaseConfig } from "@/lib/supabase/env";
 import { NextResponse } from "next/server";
@@ -50,6 +51,17 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "Supabase is not configured in .env.local" },
       { status: 503 },
+    );
+  }
+
+  const ip = clientIpFromRequest(request);
+  if (!checkEnrollStubRateLimit(ip)) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Too many submissions. Try again in a minute.",
+      },
+      { status: 429 },
     );
   }
 
