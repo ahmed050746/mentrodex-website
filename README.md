@@ -28,9 +28,15 @@ Run SQL in Supabase SQL editor (in order):
 
 1. `supabase/migrations/003_orders.sql` — `orders` table
 2. `supabase/migrations/004_orders_image_upload.sql` — `image_upload` column
-3. `supabase/migrations/005_storage_payment_screenshots.sql` — `payment-screenshots` bucket + policies
-4. `supabase/migrations/007_orders_country_and_value.sql` — `country` + `value` columns (if upgrading an older project)
-5. `supabase/migrations/001_initial.sql` — optional `contact_leads` for `/contact`
+3. `supabase/migrations/005_storage_payment_screenshots.sql` — `payment-screenshots` bucket (server upload only)
+4. `supabase/migrations/006_orders_insert_policy.sql` — grants + INSERT-only RLS (no anon SELECT)
+5. `supabase/migrations/007_orders_country_and_value.sql` — `country` + `value` columns (if upgrading an older project)
+6. `supabase/migrations/008_orders_meta_tracking.sql` — Meta attribution columns on `orders`
+7. `supabase/migrations/009_lms_portal.sql` — LMS tables (Version-1 student portal)
+8. `supabase/migrations/010_lms_revoke_client_roles.sql` — revoke anon/authenticated on LMS tables
+9. `supabase/migrations/011_security_harden_orders_storage.sql` — drop anon SELECT on orders + payment storage policies (upgrade from old 006)
+
+Do not run legacy `FIX_ORDERS_PERMISSIONS.sql` if it still included `allow_anon_select_orders`; use `011` instead.
 
 **`orders` columns:** `order_id`, `city`, `country`, `currency`, `value` (default `4500`), `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
 
