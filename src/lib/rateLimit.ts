@@ -61,3 +61,9 @@ export function checkAdminOrdersLoginRateLimit(ip: string): boolean {
 export function checkEnrollStubRateLimit(ip: string): boolean {
   return checkScopedRateLimit("enroll-stub", `ip:${ip}`, ENROLL_STUB_MAX);
 }
+
+const META_CAPI_MAX = 40;
+
+export function checkMetaCapiRateLimit(ip: string): boolean {
+  return checkScopedRateLimit("meta-capi", `ip:${ip}`, META_CAPI_MAX);
+}

@@ -1,7 +1,15 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
+import {
+  isMetaCapiRequestAllowed,
+  validateMetaCapiPayload,
+} from "@/lib/metaCapiGuard";
 import { normalizePakPhone } from "@/lib/normalizePakPhone";
 import { resolveMetaTestEventCode } from "@/lib/metaTracking";
+import {
+  checkMetaCapiRateLimit,
+  clientIpFromRequest,
+} from "@/lib/rateLimit";
 
 const GRAPH_VERSION = "v21.0";
 
@@ -56,24 +64,37 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = (await request.json().catch(() => ({}))) as IncomingBody;
-  const eventName = body.event_name?.trim();
-  const eventId = body.event_id?.trim();
+  if (!isMetaCapiRequestAllowed(request)) {
+    return NextResponse.json({ ok: false, error: "Forbidden." }, { status: 403 });
+  }
 
-  if (!eventName || !eventId) {
+  const clientIpKey = clientIpFromRequest(request);
+  if (!checkMetaCapiRateLimit(clientIpKey)) {
     return NextResponse.json(
-      { ok: false, error: "event_name and event_id are required." },
+      { ok: false, error: "Too many requests. Try again in a minute." },
+      { status: 429 },
+    );
+  }
+
+  const body = (await request.json().catch(() => ({}))) as IncomingBody;
+  const validationError = validateMetaCapiPayload(body);
+  if (validationError) {
+    return NextResponse.json(
+      { ok: false, error: validationError },
       { status: 400 },
     );
   }
 
+  const eventName = body.event_name!.trim();
+  const eventId = body.event_id!.trim();
+
   const cookieHeader = request.headers.get("cookie");
   const userAgent = request.headers.get("user-agent") ?? undefined;
-  const ip = clientIp(request);
+  const metaClientIp = clientIp(request);
 
   const userData: Record<string, string | string[]> = {};
   if (userAgent) userData.client_user_agent = userAgent;
-  if (ip) userData.client_ip_address = ip;
+  if (metaClientIp) userData.client_ip_address = metaClientIp;
 
   const fbp = parseCookie(cookieHeader, "_fbp");
   const fbc = parseCookie(cookieHeader, "_fbc");
@@ -119,7 +140,7 @@ export async function POST(request: Request) {
   const graphBody: Record<string, unknown> = {
     data: [eventPayload],
   };
-  const testEventCode = resolveMetaTestEventCode(body.test_event_code);
+  const testEventCode = resolveMetaTestEventCode(null);
   if (testEventCode) {
     graphBody.test_event_code = testEventCode;
   }
