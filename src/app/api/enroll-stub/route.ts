@@ -1,8 +1,11 @@
 import { COURSE_CURRENCY, COURSE_PRICE_PKR } from "@/lib/coursePrice";
 import { normalizePakPhone } from "@/lib/normalizePakPhone";
 import { checkEnrollStubRateLimit, clientIpFromRequest } from "@/lib/rateLimit";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSupabaseConfig } from "@/lib/supabase/env";
+import {
+  createServiceRoleClient,
+  SupabaseConfigError,
+} from "@/lib/supabase/serviceRole";
 import { NextResponse } from "next/server";
 
 const BUCKET = "payment-screenshots";
@@ -12,12 +15,6 @@ const ALLOWED_TYPES = new Set([
   "image/png",
   "image/webp",
 ]);
-
-function parseOrderValue(raw: FormDataEntryValue | null): number {
-  if (raw == null || raw === "") return COURSE_PRICE_PKR;
-  const n = Number(String(raw).trim());
-  return Number.isFinite(n) && n > 0 ? n : COURSE_PRICE_PKR;
-}
 
 function extFromMime(mime: string): string {
   switch (mime) {
@@ -137,9 +134,8 @@ export async function POST(request: Request) {
 
   const country = String(form.get("country") ?? "").trim() || null;
   const city = String(form.get("city") ?? "").trim() || null;
-  const currency =
-    String(form.get("currency") ?? "").trim() || COURSE_CURRENCY;
-  const value = parseOrderValue(form.get("value"));
+  const currency = COURSE_CURRENCY;
+  const value = COURSE_PRICE_PKR;
   const event_name =
     String(form.get("event_name") ?? "").trim() ||
     "payment_screenshot_submitted";
@@ -152,7 +148,24 @@ export async function POST(request: Request) {
   const ext = extFromMime(imageMime);
   const objectPath = `${order_id}/${Date.now()}-${sanitizeFilename(screenshot.name || `payment.${ext}`)}`;
 
-  const supabase = createAdminClient();
+  let supabase;
+  try {
+    supabase = createServiceRoleClient();
+  } catch (e) {
+    const message =
+      e instanceof SupabaseConfigError
+        ? e.message
+        : "Server database client is not configured.";
+    return NextResponse.json(
+      {
+        ok: false,
+        error: message,
+        hint: "Add SUPABASE_SERVICE_ROLE_KEY in Vercel / .env.local (server-only).",
+      },
+      { status: 503 },
+    );
+  }
+
   const fileBuffer = Buffer.from(await screenshot.arrayBuffer());
 
   const { error: uploadError } = await supabase.storage
@@ -206,7 +219,7 @@ export async function POST(request: Request) {
         ok: false,
         error: error.message,
         hint:
-          "Supabase → SQL Editor: open and run supabase/FIX_ORDERS_PERMISSIONS.sql (GRANT + RLS on orders).",
+          "Add SUPABASE_SERVICE_ROLE_KEY on the server (Vercel env). Run supabase/migrations/013_revoke_anon_insert_orders.sql only after service role is configured.",
       },
       { status: 500 },
     );

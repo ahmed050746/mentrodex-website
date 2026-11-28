@@ -29,15 +29,21 @@ Run SQL in Supabase SQL editor (in order):
 1. `supabase/migrations/003_orders.sql` — `orders` table
 2. `supabase/migrations/004_orders_image_upload.sql` — `image_upload` column
 3. `supabase/migrations/005_storage_payment_screenshots.sql` — `payment-screenshots` bucket (server upload only)
-4. `supabase/migrations/006_orders_insert_policy.sql` — grants + INSERT-only RLS (no anon SELECT)
+4. `supabase/migrations/006_orders_insert_policy.sql` — service_role grants on orders (no anon policies)
 5. `supabase/migrations/007_orders_country_and_value.sql` — `country` + `value` columns (if upgrading an older project)
 6. `supabase/migrations/008_orders_meta_tracking.sql` — Meta attribution columns on `orders`
 7. `supabase/migrations/009_lms_portal.sql` — LMS tables (Version-1 student portal)
 8. `supabase/migrations/010_lms_revoke_client_roles.sql` — revoke anon/authenticated on LMS tables
 9. `supabase/migrations/011_security_harden_orders_storage.sql` — drop anon SELECT on orders + payment storage policies (upgrade from old 006)
 10. `supabase/migrations/012_payment_screenshots_private_bucket.sql` — private bucket (admin signed URLs only)
+11. `supabase/migrations/013_revoke_anon_insert_orders.sql` — block direct anon inserts on orders (server API only)
+12. `supabase/migrations/014_revoke_anon_contact_leads.sql` — block direct anon inserts on contact_leads (no-op if table missing)
 
-Do not run legacy `FIX_ORDERS_PERMISSIONS.sql` if it still included `allow_anon_select_orders`; use `011` instead.
+Optional: `supabase/migrations/001_contact_leads.sql` — create `contact_leads` for `/contact` if you never ran `001_initial.sql`
+
+Do not run legacy `FIX_ORDERS_PERMISSIONS.sql` if it re-opened anon SELECT/INSERT; use `011` and `013` instead.
+
+**Production:** `SUPABASE_SERVICE_ROLE_KEY` is required on Vercel before running migration `013`.
 
 **`orders` columns:** `order_id`, `city`, `country`, `currency`, `value` (default `4500`), `first_name`, `last_name`, `phone_number`, `event_name`, `image_upload`, `created_at`
 

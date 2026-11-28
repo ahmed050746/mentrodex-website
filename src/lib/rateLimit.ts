@@ -67,3 +67,9 @@ const META_CAPI_MAX = 40;
 export function checkMetaCapiRateLimit(ip: string): boolean {
   return checkScopedRateLimit("meta-capi", `ip:${ip}`, META_CAPI_MAX);
 }
+
+const CONTACT_STUB_MAX = 10;
+
+export function checkContactStubRateLimit(ip: string): boolean {
+  return checkScopedRateLimit("contact-stub", `ip:${ip}`, CONTACT_STUB_MAX);
+}

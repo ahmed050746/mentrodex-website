@@ -18,10 +18,3 @@ create index if not exists orders_order_id_idx on public.orders (order_id);
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 
 alter table public.orders enable row level security;
-
-drop policy if exists allow_anon_insert_orders on public.orders;
-create policy allow_anon_insert_orders
-  on public.orders
-  for insert
-  to anon, authenticated
-  with check (true);
