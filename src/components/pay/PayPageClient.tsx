@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 import {
   compressImageFile,
@@ -40,6 +41,7 @@ const PHONE_COUNTRIES = [
 ] as const;
 
 export default function PayPageClient() {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [method, setMethod] = useState<PayMethod>("bank");
   const [preview, setPreview] = useState<string | null>(null);
@@ -53,6 +55,11 @@ export default function PayPageClient() {
   const [sizeNote, setSizeNote] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  function closeSuccessModalAndGoHome() {
+    setModalOpen(false);
+    router.push("/");
+  }
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [fields, setFields] = useState({
@@ -797,7 +804,7 @@ export default function PayPageClient() {
             type="button"
             className="thank-modal__close"
             id="payModalCloseBtn"
-            onClick={() => setModalOpen(false)}
+            onClick={closeSuccessModalAndGoHome}
           >
             Got it!
           </button>

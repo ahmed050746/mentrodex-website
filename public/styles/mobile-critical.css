@@ -79,7 +79,7 @@ html.page-v2 #layout-mobile .m-header {
   color: #fff;
 }
 
-#layout-mobile .m-header .nav-login {
+#layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled) .nav-login {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -93,6 +93,23 @@ html.page-v2 #layout-mobile .m-header {
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
+}
+
+#layout-mobile .m-header.is-past-hero .m-header__actions,
+#layout-mobile .m-header.is-scrolled .m-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-login,
+#layout-mobile .m-header.is-scrolled .nav-login,
+#layout-mobile .m-header.is-past-hero .nav-enroll,
+#layout-mobile .m-header.is-scrolled .nav-enroll {
+  min-height: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 13px;
 }
 
 #layout-mobile .m-main {

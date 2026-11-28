@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   isAdminOrdersAuthed,
   isPurchaseEventName,
+  isRejectedEventName,
 } from "@/lib/adminOrdersSession";
 import { formatCreatedAtPkt } from "@/lib/formatPktTime";
 import type { AdminOrderRow } from "@/lib/adminOrdersTypes";
@@ -72,9 +73,9 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ ok: false, error: "Unauthorized." }, { status: 401 });
   }
 
-  let body: { order_id?: string };
+  let body: { order_id?: string; action?: string };
   try {
-    body = (await request.json()) as { order_id?: string };
+    body = (await request.json()) as { order_id?: string; action?: string };
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid JSON." }, { status: 400 });
   }
@@ -86,6 +87,9 @@ export async function PATCH(request: Request) {
       { status: 400 },
     );
   }
+
+  const actionRaw = body.action?.trim().toLowerCase() ?? "approve";
+  const action = actionRaw === "reject" ? "reject" : "approve";
 
   try {
     const supabase = createServiceRoleClient();
@@ -111,17 +115,38 @@ export async function PATCH(request: Request) {
       );
     }
 
-    if (isPurchaseEventName(existing.event_name)) {
+    if (action === "approve") {
+      if (isPurchaseEventName(existing.event_name)) {
+        return NextResponse.json({
+          ok: true,
+          already_approved: true,
+          order: { order_id: orderId, event_name: "Purchase" },
+        });
+      }
+      if (isRejectedEventName(existing.event_name)) {
+        return NextResponse.json(
+          { ok: false, error: "Order was already rejected." },
+          { status: 409 },
+        );
+      }
+    } else if (isRejectedEventName(existing.event_name)) {
       return NextResponse.json({
         ok: true,
-        already_approved: true,
-        order: { order_id: orderId, event_name: "Purchase" },
+        already_rejected: true,
+        order: { order_id: orderId, event_name: "Rejected" },
       });
+    } else if (isPurchaseEventName(existing.event_name)) {
+      return NextResponse.json(
+        { ok: false, error: "Order was already approved." },
+        { status: 409 },
+      );
     }
+
+    const nextEventName = action === "reject" ? "Rejected" : "Purchase";
 
     const { data: updated, error: updateError } = await supabase
       .from("orders")
-      .update({ event_name: "Purchase" })
+      .update({ event_name: nextEventName })
       .eq("order_id", orderId)
       .select(ORDER_COLUMNS)
       .single();

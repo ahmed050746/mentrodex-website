@@ -9,6 +9,14 @@ function isPurchase(eventName: string): boolean {
   return eventName.trim().toLowerCase() === "purchase";
 }
 
+function isRejected(eventName: string): boolean {
+  return eventName.trim().toLowerCase() === "rejected";
+}
+
+function isPending(eventName: string): boolean {
+  return !isPurchase(eventName) && !isRejected(eventName);
+}
+
 function matchesSearch(order: AdminOrderRow, q: string): boolean {
   if (!q) return true;
   const needle = q.toLowerCase();
@@ -61,8 +69,9 @@ export function AdminOrdersClient() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [approvingId, setApprovingId] = useState<string | null>(null);
+  const [actionOrderId, setActionOrderId] = useState<string | null>(null);
   const [purchaseSectionOpen, setPurchaseSectionOpen] = useState(false);
+  const [rejectedSectionOpen, setRejectedSectionOpen] = useState(false);
 
   const loadOrders = useCallback(async () => {
     setLoading(true);
@@ -109,23 +118,30 @@ export function AdminOrdersClient() {
 
   const pendingOrders = useMemo(
     () =>
-      orders
-        .filter((o) => !isPurchase(o.event_name))
-        .filter((o) => matchesSearch(o, q)),
+      orders.filter((o) => isPending(o.event_name)).filter((o) => matchesSearch(o, q)),
     [orders, q],
   );
 
   const approvedOrders = useMemo(
     () =>
-      orders
-        .filter((o) => isPurchase(o.event_name))
-        .filter((o) => matchesSearch(o, q)),
+      orders.filter((o) => isPurchase(o.event_name)).filter((o) => matchesSearch(o, q)),
+    [orders, q],
+  );
+
+  const rejectedOrders = useMemo(
+    () =>
+      orders.filter((o) => isRejected(o.event_name)).filter((o) => matchesSearch(o, q)),
     [orders, q],
   );
 
   const approvedByDate = useMemo(
     () => groupOrdersByPktDate(approvedOrders),
     [approvedOrders],
+  );
+
+  const rejectedByDate = useMemo(
+    () => groupOrdersByPktDate(rejectedOrders),
+    [rejectedOrders],
   );
 
   async function onLogin(e: FormEvent) {
@@ -163,20 +179,27 @@ export function AdminOrdersClient() {
     setOrders([]);
   }
 
-  async function onApprove(order: AdminOrderRow) {
-    if (isPurchase(order.event_name)) return;
-    const ok = window.confirm(
-      `Approve order ${order.order_id} and send Meta Purchase CAPI?`,
-    );
-    if (!ok) return;
+  async function patchOrder(
+    order: AdminOrderRow,
+    action: "approve" | "reject",
+  ) {
+    if (!isPending(order.event_name)) return;
 
-    setApprovingId(order.order_id);
+    const message =
+      action === "approve"
+        ? `Approve order ${order.order_id} and send Meta Purchase CAPI?`
+        : `Reject order ${order.order_id}? It will move to the rejected list.`;
+
+    if (!window.confirm(message)) return;
+
+    setActionOrderId(order.order_id);
+    const nextEvent = action === "approve" ? "Purchase" : "Rejected";
     try {
       const res = await fetch("/api/admin/orders", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ order_id: order.order_id }),
+        body: JSON.stringify({ order_id: order.order_id, action }),
       });
       const json = (await res.json()) as {
         ok?: boolean;
@@ -184,21 +207,25 @@ export function AdminOrdersClient() {
         error?: string;
       };
       if (!res.ok || !json.ok) {
-        window.alert(json.error ?? "Approve failed.");
+        window.alert(json.error ?? `${action === "approve" ? "Approve" : "Reject"} failed.`);
         return;
       }
-      const next = json.order ?? { ...order, event_name: "Purchase" };
+      const next = json.order ?? { ...order, event_name: nextEvent };
       setOrders((prev) =>
         prev.map((row) =>
           row.order_id === order.order_id
-            ? { ...row, ...next, event_name: "Purchase" }
+            ? { ...row, ...next, event_name: nextEvent }
             : row,
         ),
       );
     } catch {
-      window.alert("Network error while approving.");
+      window.alert(
+        action === "approve"
+          ? "Network error while approving."
+          : "Network error while rejecting.",
+      );
     } finally {
-      setApprovingId(null);
+      setActionOrderId(null);
     }
   }
 
@@ -246,7 +273,7 @@ export function AdminOrdersClient() {
           <h1 className={styles.title}>Orders</h1>
           <p className={styles.subtitle}>
             Pending: {pendingOrders.length} · Purchase sent:{" "}
-            {approvedOrders.length}
+            {approvedOrders.length} · Rejected: {rejectedOrders.length}
           </p>
         </div>
         <button
@@ -333,16 +360,26 @@ export function AdminOrdersClient() {
                         <p className={styles.amount}>
                           {order.currency} {order.value.toLocaleString()}
                         </p>
-                        <button
-                          type="button"
-                          className={styles.btnApprove}
-                          disabled={approvingId === order.order_id}
-                          onClick={() => void onApprove(order)}
-                        >
-                          {approvingId === order.order_id
-                            ? "Approving…"
-                            : "Approve & send Purchase"}
-                        </button>
+                        <div className={styles.actionRow}>
+                          <button
+                            type="button"
+                            className={styles.btnApprove}
+                            disabled={actionOrderId === order.order_id}
+                            onClick={() => void patchOrder(order, "approve")}
+                          >
+                            {actionOrderId === order.order_id
+                              ? "Working…"
+                              : "Approve & send Purchase"}
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.btnReject}
+                            disabled={actionOrderId === order.order_id}
+                            onClick={() => void patchOrder(order, "reject")}
+                          >
+                            Reject
+                          </button>
+                        </div>
                       </div>
                       <div className={styles.pendingMedia}>
                         {order.image_upload ? (
@@ -373,6 +410,79 @@ export function AdminOrdersClient() {
               </div>
             )}
           </section>
+
+          {rejectedOrders.length > 0 ? (
+            <section className={styles.toggleSection}>
+              <button
+                type="button"
+                className={styles.toggleHeader}
+                aria-expanded={rejectedSectionOpen}
+                onClick={() => setRejectedSectionOpen((o) => !o)}
+              >
+                <span>Rejected ({rejectedOrders.length})</span>
+                <span className={styles.toggleChevron} aria-hidden>
+                  {rejectedSectionOpen ? "▾" : "▸"}
+                </span>
+              </button>
+              {rejectedSectionOpen ? (
+                <div className={styles.toggleBody}>
+                  {rejectedByDate.map(([dateLabel, dayOrders]) => (
+                    <div key={dateLabel}>
+                      <h3 className={styles.dateGroupTitle}>{dateLabel}</h3>
+                      <div className={styles.approvedList}>
+                        {dayOrders.map((order) => {
+                          const customerName = [
+                            order.first_name,
+                            order.last_name,
+                          ]
+                            .filter(Boolean)
+                            .join(" ");
+                          return (
+                            <div
+                              key={order.id}
+                              className={styles.approvedRow}
+                            >
+                              <span className={styles.approvedTime}>
+                                {pktTimeOnly(order)}
+                              </span>
+                              <div className={styles.approvedMain}>
+                                <div className={styles.approvedName}>
+                                  {customerName || "—"}
+                                </div>
+                                <div className={styles.approvedSub}>
+                                  {order.order_id}
+                                  {order.email ? ` · ${order.email}` : ""}
+                                </div>
+                              </div>
+                              {order.image_upload ? (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setPreviewUrl(
+                                      adminOrderScreenshotSrc(order.order_id),
+                                    )
+                                  }
+                                  aria-label="View receipt"
+                                >
+                                  <img
+                                    src={adminOrderScreenshotSrc(order.order_id)}
+                                    alt=""
+                                    className={styles.approvedThumb}
+                                  />
+                                </button>
+                              ) : (
+                                <span className={styles.badgeRejected}>✕</span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+          ) : null}
 
           {approvedOrders.length > 0 ? (
             <section className={styles.toggleSection}>

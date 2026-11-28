@@ -116,6 +116,28 @@
   color: #e8eaed;
 }
 
+.actionRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+  width: 100%;
+}
+
+@media (min-width: 400px) {
+  .actionRow {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .actionRow .btnApprove,
+  .actionRow .btnReject {
+    flex: 1 1 0;
+    width: auto;
+    margin-top: 0;
+  }
+}
+
 .btnApprove {
   composes: btn;
   background: #2d6a4f;
@@ -124,7 +146,16 @@
   margin-top: 0.65rem;
 }
 
-.btnApprove:disabled {
+.btnReject {
+  composes: btn;
+  background: #5c2b2b;
+  color: #f8d7da;
+  border: 1px solid #8b3a3a;
+  width: 100%;
+}
+
+.btnApprove:disabled,
+.btnReject:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
@@ -266,6 +297,14 @@
   composes: badge;
   background: #1e3a2f;
   color: #81c995;
+}
+
+.badgeRejected {
+  composes: badge;
+  background: #3d1f1f;
+  color: #f5a8a8;
+  min-width: 1.75rem;
+  text-align: center;
 }
 
 .toggleSection {

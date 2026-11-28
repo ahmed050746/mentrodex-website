@@ -3613,7 +3613,6 @@ button[type="submit"]:disabled {
   outline-offset: 3px;
 }
 
-#layout-mobile .m-header.is-past-hero .nav-login,
 #layout-desktop .d-header--fallback.is-past-hero .nav-login,
 #layout-desktop .d-header--fallback.is-scrolled .nav-login {
   min-height: 42px;
@@ -3625,7 +3624,6 @@ button[type="submit"]:disabled {
   box-shadow: 0 4px 14px -8px rgba(24, 24, 27, 0.2);
 }
 
-#layout-mobile .m-header.is-past-hero .nav-login:hover,
 #layout-desktop .d-header--fallback.is-past-hero .nav-login:hover,
 #layout-desktop .d-header--fallback.is-scrolled .nav-login:hover {
   border-color: rgba(var(--primary-rgb), 0.35);
@@ -3633,7 +3631,7 @@ button[type="submit"]:disabled {
   background: rgba(var(--primary-rgb), 0.06);
 }
 
-#layout-mobile .m-header .nav-login {
+#layout-mobile .m-header:not(.is-past-hero):not(.is-scrolled) .nav-login {
   min-height: 38px;
   font-size: 13px;
 }
@@ -6272,6 +6270,69 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
 
 #layout-mobile .m-header.is-past-hero .nav-enroll::before {
   display: none;
+}
+
+/* Sticky header: Login + Enroll as matched compact pair */
+#layout-mobile .m-header.is-past-hero .m-header__inner,
+#layout-mobile .m-header.is-scrolled .m-header__inner {
+  gap: 10px;
+}
+
+#layout-mobile .m-header.is-past-hero .m-logo,
+#layout-mobile .m-header.is-scrolled .m-logo {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+#layout-mobile .m-header.is-past-hero .m-logo__text,
+#layout-mobile .m-header.is-scrolled .m-logo__text {
+  font-size: 1.0625rem;
+  letter-spacing: -0.02em;
+}
+
+#layout-mobile .m-header.is-past-hero .m-header__actions,
+#layout-mobile .m-header.is-scrolled .m-header__actions {
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-login,
+#layout-mobile .m-header.is-scrolled .nav-login {
+  min-height: 40px;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-heading);
+  box-shadow: none;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-login:hover,
+#layout-mobile .m-header.is-scrolled .nav-login:hover {
+  transform: none;
+  border-color: rgba(var(--primary-rgb), 0.35);
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.06);
+}
+
+#layout-mobile .m-header.is-past-hero .nav-enroll,
+#layout-mobile .m-header.is-scrolled .nav-enroll {
+  min-height: 40px;
+  height: 40px;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  border-radius: 8px !important;
+  border: 0 !important;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-enroll__label,
+#layout-mobile .m-header.is-scrolled .nav-enroll__label {
+  font-size: 13px;
 }
 
 @keyframes nav-enroll-enter {

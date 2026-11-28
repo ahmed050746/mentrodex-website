@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { PortalLoginFallback } from "./PortalLoginFallback";
 import styles from "./portal.module.css";
@@ -125,6 +126,9 @@ export function PortalLoginClient() {
 
   return (
     <div className={styles.portalPage}>
+      <Link className={styles.backLink} href="/" aria-label="Back to home">
+        ← Back
+      </Link>
       <p className={styles.brand} aria-label="Mentrodex">
         Mentrodex
       </p>

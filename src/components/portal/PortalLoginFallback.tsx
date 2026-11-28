@@ -1,9 +1,13 @@
+import Link from "next/link";
 import styles from "./portal.module.css";
 
 /** Shown while the client-only login UI loads — no `<form>` to avoid native submit. */
 export function PortalLoginFallback() {
   return (
     <div className={styles.portalPage}>
+      <Link className={styles.backLink} href="/" aria-label="Back to home">
+        ← Back
+      </Link>
       <p className={styles.brand} aria-label="Mentrodex">
         Mentrodex
       </p>

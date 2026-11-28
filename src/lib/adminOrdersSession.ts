@@ -96,3 +96,12 @@ export function adminSessionCookieOptions(token: string) {
 export function isPurchaseEventName(name: string | null | undefined): boolean {
   return name?.trim().toLowerCase() === "purchase";
 }
+
+export function isRejectedEventName(name: string | null | undefined): boolean {
+  return name?.trim().toLowerCase() === "rejected";
+}
+
+/** Orders awaiting admin approve/reject (excludes Purchase and Rejected). */
+export function isPendingOrderEventName(name: string | null | undefined): boolean {
+  return !isPurchaseEventName(name) && !isRejectedEventName(name);
+}
