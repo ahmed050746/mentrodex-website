@@ -3564,6 +3564,80 @@ button[type="submit"]:disabled {
   justify-content: space-between;
 }
 
+.nav-login {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 6px 16px -10px rgba(0, 0, 0, 0.55);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.nav-login__label {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-login:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+  transform: translateY(-1px);
+}
+
+.nav-login:active {
+  transform: translateY(0);
+}
+
+.nav-login:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+#layout-mobile .m-header.is-past-hero .nav-login,
+#layout-desktop .d-header--fallback.is-past-hero .nav-login,
+#layout-desktop .d-header--fallback.is-scrolled .nav-login {
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-color: var(--border);
+  background: var(--bg-card);
+  color: var(--text-heading);
+  box-shadow: 0 4px 14px -8px rgba(24, 24, 27, 0.2);
+}
+
+#layout-mobile .m-header.is-past-hero .nav-login:hover,
+#layout-desktop .d-header--fallback.is-past-hero .nav-login:hover,
+#layout-desktop .d-header--fallback.is-scrolled .nav-login:hover {
+  border-color: rgba(var(--primary-rgb), 0.35);
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.06);
+}
+
+#layout-mobile .m-header .nav-login {
+  min-height: 38px;
+  font-size: 13px;
+}
+
 .nav-enroll {
   --enroll-shine: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.38) 45%, transparent 70%);
   flex-shrink: 0;
@@ -6158,20 +6232,6 @@ html.page-v2 #layout-mobile .m-header.is-scrolled,
   gap: 10px;
   flex-shrink: 0;
   min-width: 0;
-}
-
-#layout-mobile .m-header__mentor {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.9);
-  white-space: nowrap;
-}
-
-#layout-mobile .m-header.is-past-hero .m-header__mentor {
-  display: none;
 }
 
 #layout-mobile .m-logo__text {

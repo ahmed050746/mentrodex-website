@@ -79,10 +79,19 @@ html.page-v2 #layout-mobile .m-header {
   color: #fff;
 }
 
-#layout-mobile .m-header__mentor {
-  color: rgba(255, 255, 255, 0.9);
+#layout-mobile .m-header .nav-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
+  text-decoration: none;
   white-space: nowrap;
 }
 

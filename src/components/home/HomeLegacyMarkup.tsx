@@ -21,7 +21,9 @@ export default function HomeLegacyMarkup() {
                   <span className="m-logo__text">Mentrodex</span>
                 </a>
                 <div className="m-header__actions">
-                  <span className="m-header__mentor">MD Ahmed</span>
+                  <a href="/portal" className="nav-login m-header__login">
+                    <span className="nav-login__label">Login</span>
+                  </a>
                   <a href="/pay" className="nav-enroll">
                     <span className="nav-enroll__label">Enroll Now</span>
                   </a>
@@ -368,9 +370,14 @@ export default function HomeLegacyMarkup() {
                 <a className="d-logo" href="/" aria-label="Mentrodex home">
                   <span className="d-logo__text">Mentrodex</span>
                 </a>
-                <a href="/pay" className="nav-enroll d-nav-enroll">
-                  <span className="nav-enroll__label">Enroll Now</span>
-                </a>
+                <div className="d-header__actions">
+                  <a href="/portal" className="nav-login d-header__login">
+                    <span className="nav-login__label">Login</span>
+                  </a>
+                  <a href="/pay" className="nav-enroll d-nav-enroll">
+                    <span className="nav-enroll__label">Enroll Now</span>
+                  </a>
+                </div>
               </div>
             </header>
             <section className="d-hero-fallback" aria-labelledby="d-hero-fallback-title">
