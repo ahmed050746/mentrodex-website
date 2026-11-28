@@ -22,12 +22,6 @@ const pageStyles: Record<string, readonly Stylesheet[]> = {
     { href: "/styles/style.css" },
     { href: "/styles/pay-page.css" },
   ],
-  contact: [
-    { href: "/styles/design-tokens.css" },
-    { href: "/styles/design-system.css" },
-    { href: "/styles/style.css" },
-    { href: "/styles/contact-page.css" },
-  ],
 };
 
 export function LegacyStyles({ page }: { page: keyof typeof pageStyles }) {

@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — routes: `/`, `/pay`, `/contact`.
+Open [http://localhost:3000](http://localhost:3000) — routes: `/`, `/pay`, `/portal` (Version-1).
 
 ## Environment (Supabase)
 
@@ -37,10 +37,6 @@ Run SQL in Supabase SQL editor (in order):
 9. `supabase/migrations/011_security_harden_orders_storage.sql` — drop anon SELECT on orders + payment storage policies (upgrade from old 006)
 10. `supabase/migrations/012_payment_screenshots_private_bucket.sql` — private bucket (admin signed URLs only)
 11. `supabase/migrations/013_revoke_anon_insert_orders.sql` — block direct anon inserts on orders (server API only)
-12. `supabase/migrations/014_revoke_anon_contact_leads.sql` — block direct anon inserts on contact_leads (no-op if table missing)
-
-Optional: `supabase/migrations/001_contact_leads.sql` — create `contact_leads` for `/contact` if you never ran `001_initial.sql`
-
 Do not run legacy `FIX_ORDERS_PERMISSIONS.sql` if it re-opened anon SELECT/INSERT; use `011` and `013` instead.
 
 **Production:** `SUPABASE_SERVICE_ROLE_KEY` is required on Vercel before running migration `013`.
@@ -51,11 +47,10 @@ Payment screenshots are uploaded server-side to Storage bucket **`payment-screen
 
 ## Phase 1 scope (done)
 
-- UI from `index.html`, `pay.html`, `contact.html` with legacy CSS in `public/styles/`
+- UI from `index.html`, `pay.html` with legacy CSS in `public/styles/`
 - Dual mobile/desktop home layout (`HomeLegacyMarkup`, regenerated via `scripts/convert-home-body.mjs`)
 - Simplified desktop hero (`desktop-hero-fallback.css`) — **not** the `hero-studio` Vite embed
 - Pay flow: 3 steps + `POST /api/enroll-stub` (multipart) → Storage + `orders` row
-- Contact: quiz accordion (React state) + stub `POST /api/contact-stub`
 - Supabase client helpers: `src/lib/supabase/`
 
 ## Intentionally skipped (Phase 2+)
@@ -70,7 +65,7 @@ Payment screenshots are uploaded server-side to Storage bucket **`payment-screen
 
 - [ ] Port `hero-studio/` into a Next client component for desktop hero
 - [ ] Carousel + video embeds (Bunny)
-- [ ] Wire `/pay` and `/contact` to Supabase tables + Storage
+- [ ] Wire `/pay` to Supabase tables + Storage (done for orders)
 - [ ] Service-role API routes or RLS policies for public insert
 - [ ] Analytics (if desired)
 - [ ] Run `npm run build:perf` on static repo if you need production CSS bundles

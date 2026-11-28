@@ -3,30 +3,36 @@ import { cookies } from "next/headers";
 
 export const ADMIN_ORDERS_COOKIE = "admin_orders_session";
 const SESSION_MAX_AGE_SEC = 60 * 60 * 24 * 7;
+const SESSION_VERSION_LEGACY = "admin-orders-v1";
+const SESSION_VERSION_CURRENT = "admin-orders-v2";
 
 function adminPassword(): string | undefined {
   return process.env.ADMIN_ORDERS_PASSWORD?.trim() || undefined;
 }
 
-function signPayload(exp: number, secret: string): string {
-  return createHmac("sha256", secret).update(`admin-orders-v1:${exp}`).digest("hex");
+function adminSessionSecret(): string | undefined {
+  return process.env.ADMIN_SESSION_SECRET?.trim() || undefined;
 }
 
-export function createAdminOrdersSessionToken(): string | null {
-  const secret = adminPassword();
-  if (!secret) return null;
-  const exp = Math.floor(Date.now() / 1000) + SESSION_MAX_AGE_SEC;
-  return `${exp}.${signPayload(exp, secret)}`;
+/** Login is allowed when password is set and session signing is configured for this environment. */
+export function isAdminLoginConfigured(): boolean {
+  if (!adminPassword()) return false;
+  if (adminSessionSecret()) return true;
+  return process.env.NODE_ENV !== "production";
 }
 
-export function verifyAdminOrdersSessionToken(token: string): boolean {
-  const secret = adminPassword();
-  if (!secret) return false;
+function signPayload(exp: number, secret: string, version: string): string {
+  return createHmac("sha256", secret)
+    .update(`${version}:${exp}`)
+    .digest("hex");
+}
+
+function verifyToken(token: string, secret: string, version: string): boolean {
   const [expStr, sig] = token.split(".");
   if (!expStr || !sig) return false;
   const exp = Number(expStr);
   if (!Number.isFinite(exp) || exp < Math.floor(Date.now() / 1000)) return false;
-  const expected = signPayload(exp, secret);
+  const expected = signPayload(exp, secret, version);
   try {
     const a = Buffer.from(sig, "hex");
     const b = Buffer.from(expected, "hex");
@@ -35,6 +41,29 @@ export function verifyAdminOrdersSessionToken(token: string): boolean {
   } catch {
     return false;
   }
+}
+
+export function createAdminOrdersSessionToken(): string | null {
+  const dedicated = adminSessionSecret();
+  const secret = dedicated ?? adminPassword();
+  if (!secret) return null;
+  const version = dedicated ? SESSION_VERSION_CURRENT : SESSION_VERSION_LEGACY;
+  const exp = Math.floor(Date.now() / 1000) + SESSION_MAX_AGE_SEC;
+  return `${exp}.${signPayload(exp, secret, version)}`;
+}
+
+export function verifyAdminOrdersSessionToken(token: string): boolean {
+  const dedicated = adminSessionSecret();
+  if (dedicated && verifyToken(token, dedicated, SESSION_VERSION_CURRENT)) {
+    return true;
+  }
+
+  const password = adminPassword();
+  if (password && verifyToken(token, password, SESSION_VERSION_LEGACY)) {
+    return true;
+  }
+
+  return false;
 }
 
 export function verifyAdminOrdersPassword(password: string): boolean {

@@ -8,13 +8,21 @@ import {
   ADMIN_ORDERS_COOKIE,
   adminSessionCookieOptions,
   createAdminOrdersSessionToken,
+  isAdminLoginConfigured,
   verifyAdminOrdersPassword,
 } from "@/lib/adminOrdersSession";
 
 export async function POST(request: Request) {
-  if (!process.env.ADMIN_ORDERS_PASSWORD?.trim()) {
+  if (!isAdminLoginConfigured()) {
     return NextResponse.json(
-      { ok: false, error: "Admin login is not configured." },
+      {
+        ok: false,
+        error: "Admin login is not configured.",
+        hint:
+          process.env.NODE_ENV === "production"
+            ? "Set ADMIN_ORDERS_PASSWORD and ADMIN_SESSION_SECRET in Vercel."
+            : "Set ADMIN_ORDERS_PASSWORD in .env.local (ADMIN_SESSION_SECRET recommended).",
+      },
       { status: 503 },
     );
   }
