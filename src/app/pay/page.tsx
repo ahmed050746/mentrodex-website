@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import PayPageClient from "@/components/pay/PayPageClient";
 import { LegacyStyles } from "@/components/LegacyStyles";
-import { OWNER_NAME, SITE_NAME } from "@/lib/site-seo";
+import {
+  PAY_DESCRIPTION,
+  PAY_TITLE,
+  buildPublicMetadata,
+} from "@/lib/site-seo";
 
-export const metadata: Metadata = {
-  title: "Enroll Now | Pay Rs. 4,500",
-  description: `Enroll in ${OWNER_NAME}'s ${SITE_NAME} mentorship. Pay via Bank Transfer or EasyPaisa and confirm your spot.`,
-};
+export const metadata: Metadata = buildPublicMetadata({
+  title: PAY_TITLE,
+  description: PAY_DESCRIPTION,
+  pathname: "/pay",
+});
 
 export default function PayPage() {
   return (

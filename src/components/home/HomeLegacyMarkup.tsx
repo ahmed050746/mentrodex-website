@@ -689,7 +689,7 @@ export default function HomeLegacyMarkup() {
             <div className="d-footer__brand">
               <img
                 src="/img/logo white.png"
-                alt=""
+                alt="Mentrodex logo"
                 width="28"
                 height="28"
                 className="d-footer__logo"

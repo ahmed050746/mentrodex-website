@@ -1,12 +1,22 @@
-import { OWNER_NAME, SITE_NAME, SITE_URL } from "@/lib/site-seo";
+import {
+  COURSE_PRICE_PKR,
+  OWNER_NAME,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site-seo";
+
+const COURSE_NAME = "Shopify & E-commerce Course";
+
+const COURSE_DESCRIPTION =
+  "Practical Shopify and e-commerce training in Pakistan. Learn Shopify store creation, product research, product listing, store design, marketing and sales in Urdu through recorded lessons and live classes.";
 
 export function HomeCourseJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "Course",
-    name: "E-Commerce Mentorship — Shopify, Dropshipping & Marketplaces",
-    description:
-      "1-on-1 mentorship program in Pakistan covering Shopify, dropshipping, and marketplace selling.",
+    name: COURSE_NAME,
+    description: COURSE_DESCRIPTION,
+    inLanguage: ["ur", "ur-Latn"],
     provider: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -15,11 +25,15 @@ export function HomeCourseJsonLd() {
     instructor: {
       "@type": "Person",
       name: OWNER_NAME,
-      url: SITE_URL,
+    },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      inLanguage: ["ur", "ur-Latn"],
     },
     offers: {
       "@type": "Offer",
-      price: "4500",
+      price: String(COURSE_PRICE_PKR),
       priceCurrency: "PKR",
       url: `${SITE_URL}/pay`,
     },

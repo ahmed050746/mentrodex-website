@@ -114,7 +114,7 @@ export function TestimonialVideoSection({ layout }: Props) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={inlinePoster}
-                    alt=""
+                    alt={active.title}
                     className="testi-vswitch__iframe testi-vswitch__inline-poster"
                     loading="lazy"
                     decoding="async"
@@ -165,7 +165,7 @@ export function TestimonialVideoSection({ layout }: Props) {
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={previewSrc}
-                            alt=""
+                            alt={item.title}
                             className="testi-vswitch__pick-poster"
                             loading="lazy"
                             decoding="async"

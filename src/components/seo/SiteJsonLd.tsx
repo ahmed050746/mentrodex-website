@@ -1,4 +1,9 @@
-import { OWNER_NAME, SITE_NAME, SITE_URL } from "@/lib/site-seo";
+import {
+  INSTRUCTOR_EXPERIENCE,
+  OWNER_NAME,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site-seo";
 
 const organizationId = `${SITE_URL}/#organization`;
 const founderId = `${SITE_URL}/#founder`;
@@ -16,13 +21,19 @@ const graph = [
     "@id": organizationId,
     name: SITE_NAME,
     url: SITE_URL,
+    description: "Shopify and e-commerce education and practical training.",
+    areaServed: {
+      "@type": "Country",
+      name: "Pakistan",
+    },
     founder: { "@id": founderId },
   },
   {
     "@type": "Person",
     "@id": founderId,
     name: OWNER_NAME,
-    jobTitle: "E-Commerce Mentor",
+    jobTitle: "Shopify and E-commerce Trainer",
+    description: `Shopify and e-commerce instructor with ${INSTRUCTOR_EXPERIENCE} of experience.`,
     worksFor: { "@id": organizationId },
     image: `${SITE_URL}/img/hero-mentor.webp`,
   },

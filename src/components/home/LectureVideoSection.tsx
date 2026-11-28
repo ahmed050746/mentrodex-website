@@ -90,7 +90,7 @@ export function LectureVideoSection({ titleId }: Props) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={idlePoster}
-                  alt=""
+                  alt={active.title}
                   className="lec__idle-poster"
                   loading="lazy"
                   decoding="async"

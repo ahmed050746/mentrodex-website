@@ -3,19 +3,17 @@ import { HomeHeaderScroll } from "@/components/home/HomeHeaderScroll";
 import HomeLegacyMarkup from "@/components/home/HomeLegacyMarkup";
 import { LegacyStyles } from "@/components/LegacyStyles";
 import { HomeCourseJsonLd } from "@/components/seo/HomeCourseJsonLd";
-import { OWNER_NAME, SITE_NAME, SITE_URL } from "@/lib/site-seo";
+import {
+  HOME_DESCRIPTION,
+  HOME_TITLE,
+  buildPublicMetadata,
+} from "@/lib/site-seo";
 
-export const metadata: Metadata = {
-  title: "E-Commerce Mentorship Pakistan | Shopify & Dropshipping Expert",
-  description: `Get 1-on-1 mentorship from ${OWNER_NAME}, founder of ${SITE_NAME}. Master Shopify, dropshipping, eBay, Walmart, and Etsy with 16+ years of industry experience. Enroll now for Rs. 4,500.`,
-  openGraph: {
-    title: `E-Commerce Mentorship with ${OWNER_NAME} | ${SITE_NAME}`,
-    description:
-      "Shopify and dropshipping mentorship in Pakistan — 1-on-1 guidance from an experienced e-commerce mentor.",
-    url: SITE_URL,
-  },
-  alternates: { canonical: SITE_URL },
-};
+export const metadata: Metadata = buildPublicMetadata({
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  pathname: "/",
+});
 
 export default function HomePage() {
   return (
