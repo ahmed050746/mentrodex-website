@@ -4,7 +4,12 @@ import { Suspense } from "react";
 import { MetaAnalytics } from "@/components/meta/MetaAnalytics";
 import { MetaPixel } from "@/components/meta/MetaPixel";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
-import { OWNER_NAME, SITE_NAME, SITE_URL } from "@/lib/site-seo";
+import {
+  GOOGLE_SITE_VERIFICATION,
+  OWNER_NAME,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site-seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -44,6 +49,10 @@ export const metadata: Metadata = {
     description: `1-on-1 mentorship in Pakistan with ${OWNER_NAME}.`,
   },
   icons: { icon: "/img/logo-m.png" },
+  verification: {
+    google:
+      process.env.GOOGLE_SITE_VERIFICATION?.trim() || GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export default function RootLayout({
